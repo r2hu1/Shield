@@ -1,5 +1,5 @@
 "use client";
-import { Check, FileJson, Settings, User, X } from "lucide-react";
+import { Check, FileJson, Loader, Settings, User, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { ModeToggle } from "./ThemeSwitcher";
@@ -7,20 +7,15 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
     AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
-    AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
     Accordion,
@@ -36,6 +31,7 @@ import changePassword from "@/server_functions/changePassword";
 
 export default function ManageAccount() {
     const [mng, setMng] = useState(false);
+    const [impr, setImpr] = useState(false);
     const [crntPwd, setCrntPwd] = useState("");
     const [newPwd, setNewPwd] = useState("");
     const [loading, setLoading] = useState("");
@@ -54,11 +50,14 @@ export default function ManageAccount() {
             if (JSON.parse(data).success) {
                 toast.success("Password changed successfully, login with your new password to continue!");
                 setMng(false);
+                setLoading(false);
                 return signOut({ callbackUrl: "/login" });
             };
+            setLoading(false);
             return toast.error(JSON.parse(data).error);
         }
         catch (e) {
+            setLoading(false);
             console.log(e);
         }
     };
@@ -73,10 +72,9 @@ export default function ManageAccount() {
                     <DropdownMenuItem onClick={() => setMng(true)} className="justify-between">Account <User className="h-4 w-4" /></DropdownMenuItem>
                     <DropdownMenuItem asChild><ModeToggle /></DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="justify-between">Import <FileJson className="h-4 w-4" /></DropdownMenuItem>
+                    <DropdownMenuItem className="justify-between" onClick={() => setImpr(true)}>Import <FileJson className="h-4 w-4" /></DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-
             <AlertDialog open={mng}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
@@ -125,7 +123,7 @@ export default function ManageAccount() {
                                                     </ul>
                                                 </div>
                                             ) : null}
-                                            <Button onClick={handleChangePassword} className="mt-2">Change</Button>
+                                            <Button onClick={handleChangePassword} className="mt-2" disabled={loading || !reqMeets}>{loading ? <Loader className="h-4 w-4 animate-spin" /> : 'Save'}</Button>
                                         </div>
                                     </AccordionContent>
                                 </AccordionItem>
@@ -139,6 +137,22 @@ export default function ManageAccount() {
                                 </AccordionItem>
 
                             </Accordion>
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog open={impr}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle className="text-left relative">Import passwords <X onClick={() => setImpr(false)} className="h-4 w-4 absolute -top-3 -right-3 cursor-pointer hover:opacity-85" /></AlertDialogTitle>
+                        <AlertDialogDescription className="text-left">
+                            Import passwords from your or your friends encrypted json.
+
+                            <div className="mt-5 grid gap-3">
+                                <Input type="file" accept=".json"/>
+                                <Button>Import</Button>
+                            </div>
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                 </AlertDialogContent>

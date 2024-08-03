@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
           >
             {children}
           </ThemeProvider>
-          <Toaster position="top-center" />
+          <Toaster position="top-center"/>
           <Preloader />
         </body>
       </html>
