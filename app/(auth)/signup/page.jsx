@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Check, Eye, EyeOff, ShieldCheck, ShieldHalf, X } from "lucide-react";
+import { Check, Eye, EyeOff, Loader, ShieldCheck, ShieldHalf, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -14,6 +14,7 @@ export default function Page() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [viewType, setViewType] = useState("password");
+    const [logging, setLogging] = useState(false);
     const reqMeets = /[A-Z]/.test(password) && /[0-9]/.test(password) && password.length >= 8 && /[!@#$%^&*(){}[\]/?|`~,.;:]/.test(password) ? true : false;
 
     const user = useSession();
@@ -24,23 +25,32 @@ export default function Page() {
         if (!email) {
             return toast.error("Please enter your email address!");
         }
-        let encodedPwd = base64.encode(password);
-        fetch("/api/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password: encodedPwd }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (!data.success) {
-                    toast.error(data.error);
-                } else {
-                    toast.success("Account created successfully you can login now!");
-                    router.push("/login");
-                }
-            });
+        try {
+            setLogging(true);
+            let encodedPwd = base64.encode(password);
+            fetch("/api/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password: encodedPwd }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (!data.success) {
+                        toast.error(data.error);
+                        setLogging(false);
+                    } else {
+                        toast.success("Account created successfully you can login now!");
+                        router.push("/login");
+                        setLogging(false);
+                    }
+                });
+        }
+        catch (e) {
+            setLogging(false);
+        }
+
     };
     return (
         <div className="w-full max-w-md px-6">
@@ -80,7 +90,7 @@ export default function Page() {
                     </div>
                 ) : null}
                 <div className="grid mt-3">
-                    <Button onClick={handleSubmit} disabled={!reqMeets}>SignUp</Button>
+                    <Button onClick={handleSubmit} disabled={!reqMeets || logging}>{logging ? <Loader className="h-4 w-4 animate-spin" /> : "SignUp"}</Button>
                     <p className="text-sm text-muted-foreground text-center mt-2">Already have one? <Link href="/login" className="underline text-primary">Login</Link></p>
                 </div>
             </div>

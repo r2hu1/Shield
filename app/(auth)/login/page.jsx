@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Check, Eye, EyeOff, ShieldCheck, ShieldHalf, View, X } from "lucide-react";
+import { Check, Eye, EyeOff, Loader, ShieldCheck, ShieldHalf, View, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -62,7 +62,7 @@ export default function Page() {
                     <Button size="icon" variant="secondary" onClick={() => setViewType(viewType === "password" ? "text" : "password")} className="min-w-10">{viewType != "password" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
                 </div>
                 <div className="grid mt-3">
-                    <Button onClick={handleSubmit}>Login</Button>
+                    <Button onClick={handleSubmit} disabled={logging}>{logging ? <Loader className="h-4 w-4 animate-spin"/> : "Login"}</Button>
                     <p className="text-sm text-muted-foreground text-center mt-2">Don't have one? <Link href="/signup" className="underline text-primary">SignUp</Link></p>
                 </div>
             </div>
