@@ -21,12 +21,7 @@ export default function Page() {
     if (user.status === "authenticated") return router.push("/");
 
     const handleSubmit = async () => {
-        if (!email) {
-            return toast.error("Please enter your email address!");
-        }
-        else if (!password) {
-            return toast.error("Please enter your password!");
-        }
+        if (!email || !password) return toast.error(`Please enter your ${email ? "password" : "email address"}!`);
         try {
             setLogging(true);
             const res = await signIn("credentials", {
@@ -38,7 +33,6 @@ export default function Page() {
                 setLogging(false);
                 return toast.error("Invalid email or password please try again!");
             }
-            toast.success("Login successful, redirecting to dashboard...");
             router.push("/");
             setLogging(false);
         } catch (error) {
@@ -62,7 +56,7 @@ export default function Page() {
                     <Button size="icon" variant="secondary" onClick={() => setViewType(viewType === "password" ? "text" : "password")} className="min-w-10">{viewType != "password" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
                 </div>
                 <div className="grid mt-3">
-                    <Button onClick={handleSubmit} disabled={logging}>{logging ? <Loader className="h-4 w-4 animate-spin"/> : "Login"}</Button>
+                    <Button onClick={handleSubmit} disabled={logging}>{logging ? <Loader className="h-4 w-4 animate-spin" /> : "Login"}</Button>
                     <p className="text-sm text-muted-foreground text-center mt-2">Don't have one? <Link href="/signup" className="underline text-primary">SignUp</Link></p>
                 </div>
             </div>

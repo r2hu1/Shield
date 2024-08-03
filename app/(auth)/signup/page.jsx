@@ -22,9 +22,8 @@ export default function Page() {
 
     if (user.status === "authenticated") return router.push("/");
     const handleSubmit = () => {
-        if (!email) {
-            return toast.error("Please enter your email address!");
-        }
+        if (!email || !reqMeets) return toast.error(`Please enter ${email ? "a strong password!" : "your email address"}!`);
+
         try {
             setLogging(true);
             let encodedPwd = base64.encode(password);
@@ -67,7 +66,7 @@ export default function Page() {
                     <Input value={password} onChange={(e) => setPassword(e.target.value)} id="password" placeholder="********" type={viewType} />
                     <Button size="icon" variant="secondary" onClick={() => setViewType(viewType === "password" ? "text" : "password")} className="min-w-10">{viewType != "password" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
                 </div>
-                {!reqMeets && password.length >= 1 ? (
+                {password.length >= 1 ? (
                     <div className="mt-2 rounded-md border border-border p-3">
                         <ul className="list-none grid gap-2">
                             <li className="flex items-center gap-3">
@@ -90,7 +89,7 @@ export default function Page() {
                     </div>
                 ) : null}
                 <div className="grid mt-3">
-                    <Button onClick={handleSubmit} disabled={!reqMeets || logging}>{logging ? <Loader className="h-4 w-4 animate-spin" /> : "SignUp"}</Button>
+                    <Button onClick={handleSubmit} disabled={logging}>{logging ? <Loader className="h-4 w-4 animate-spin" /> : "SignUp"}</Button>
                     <p className="text-sm text-muted-foreground text-center mt-2">Already have one? <Link href="/login" className="underline text-primary">Login</Link></p>
                 </div>
             </div>
