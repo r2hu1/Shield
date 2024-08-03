@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import {
     InputOTP,
@@ -6,6 +7,7 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { ShieldHalf } from "lucide-react";
+import { toast } from "sonner";
 
 export default function Page() {
     return (
@@ -29,6 +31,7 @@ export default function Page() {
                         <InputOTPSlot index={5} />
                     </InputOTPGroup>
                 </InputOTP>
+                <p className="text-sm text-muted-foreground">Didn't get? <span className="cursor-pointer hover:opacity-85 underline" onClick={()=>toast.success("OTP sent, check your email!")}>Resend</span></p>
                 <Button>Verfy</Button>
             </div>
         </div>
