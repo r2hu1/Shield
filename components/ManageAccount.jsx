@@ -28,6 +28,7 @@ import { Label } from "./ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
 import changePassword from "@/server_functions/changePassword";
+import deleteAccount from "@/server_functions/deleteAccount";
 
 export default function ManageAccount() {
     const [mng, setMng] = useState(false);
@@ -35,6 +36,7 @@ export default function ManageAccount() {
     const [crntPwd, setCrntPwd] = useState("");
     const [newPwd, setNewPwd] = useState("");
     const [loading, setLoading] = useState("");
+    const [loadingd, setLoadingD] = useState(false);
     const reqMeets = /[A-Z]/.test(newPwd) && /[0-9]/.test(newPwd) && newPwd.length >= 8 && /[!@#$%^&*(){}[\]/?|`~,.;:]/.test(newPwd) ? true : false;
     const currUser = useSession();
 
@@ -58,6 +60,25 @@ export default function ManageAccount() {
         }
         catch (e) {
             setLoading(false);
+            console.log(e);
+        }
+    };
+
+    const handleDeleteAccount = async () => {
+        try {
+            setLoadingD(true);
+            const data = await deleteAccount({ currentUserEmail: currUser.data.user.email });
+            if (JSON.parse(data).success) {
+                toast.success("Account deleted successfully!");
+                setMng(false);
+                setLoadingD(false);
+                return signOut({ callbackUrl: "/login" });
+            };
+            setLoadingD(false);
+            return toast.error(JSON.parse(data).error);
+        }
+        catch (e) {
+            setLoadingD(false);
             console.log(e);
         }
     };
@@ -132,7 +153,7 @@ export default function ManageAccount() {
                                     <AccordionTrigger className="text-primary">Delete your account</AccordionTrigger>
                                     <AccordionContent className="grid">
                                         Permanently delete your account, this action cannot be undone.
-                                        <Button variant="outline" className="mt-2 w-fit border-red-400 text-red-400">Delete</Button>
+                                        <Button onClick={handleDeleteAccount} variant="outline" className="mt-2 w-fit border-red-400 text-red-400">{loadingd ? <Loader className="h-4 w-4 animate-spin" /> : 'Delete'}</Button>
                                     </AccordionContent>
                                 </AccordionItem>
 
@@ -150,7 +171,7 @@ export default function ManageAccount() {
                             Import passwords from your or your friends encrypted json.
 
                             <div className="mt-5 grid gap-3">
-                                <Input type="file" accept=".json"/>
+                                <Input type="file" accept=".json" />
                                 <Button>Import</Button>
                             </div>
                         </AlertDialogDescription>
