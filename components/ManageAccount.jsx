@@ -130,9 +130,9 @@ export default function ManageAccount() {
 
                                 <AccordionItem value="item-3">
                                     <AccordionTrigger className="text-primary">Delete your account</AccordionTrigger>
-                                    <AccordionContent>
+                                    <AccordionContent className="grid">
                                         Permanently delete your account, this action cannot be undone.
-                                        <Button variant="outline" className="mt-2 border-red-400 text-red-400">Delete</Button>
+                                        <Button variant="outline" className="mt-2 w-fit border-red-400 text-red-400">Delete</Button>
                                     </AccordionContent>
                                 </AccordionItem>
 
