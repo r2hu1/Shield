@@ -10,6 +10,10 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    status:{
+        type: String,
+        default: "unverified",
+    }
 });
 
 const User = models.User || model("User", userSchema);
