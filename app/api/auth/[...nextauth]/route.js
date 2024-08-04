@@ -2,7 +2,7 @@ import User from "@/models/user";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import connectDB from "@/lib/mongodb";
-import base64 from "base-64";
+import bcrypt from "bcryptjs";
 
 export const authOptions = {
   providers: [
@@ -14,10 +14,11 @@ export const authOptions = {
         try {
           await connectDB();
           const user = await User.findOne({ email });
+          const isMatch = await bcrypt.compare(password, user?.password);
           if (!user) {
             return null;
           }
-          if (password != base64.decode(user.password)) {
+          if (!isMatch) {
             return null;
           }
           return user;

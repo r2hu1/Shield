@@ -1,6 +1,5 @@
 "use client";
 import Header from "@/components/Header";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExternalLink, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -34,7 +33,7 @@ export default function Page() {
         if (status === "authenticated") {
             checkVerification();
         }
-        else{
+        else {
             router.push("/login");
         }
     }, [status, session]);
@@ -42,8 +41,21 @@ export default function Page() {
     return (
         <main>
             <Header />
-            <section className="px-6 py-14">
-                in dev
+            <section className="px-6 py-10">
+                {!isVerifyed && (
+                    <div className="p-3 rounded border border-border flex items-center gap-3">
+                        <div className="flex items-start gap-3">
+                            <ShieldAlert className="h-10 w-10" />
+                            <div>
+                                <h1 className="text-base">Verification Pending!</h1>
+                                <p className="text-sm text-muted-foreground">Your email has not been verified yet. verify it by clicking the verify button.</p>
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Button asChild className="w-fit" variant="outline"><Link href="/verify-email">Verify</Link></Button>
+                        </div>
+                    </div>
+                )}
             </section>
         </main>
     )

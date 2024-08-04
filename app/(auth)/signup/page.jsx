@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import base64 from "base-64"
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import bcrypt from "bcryptjs";
 
 export default function Page() {
     const [email, setEmail] = useState("");
@@ -21,18 +22,20 @@ export default function Page() {
     const router = useRouter();
 
     if (user.status === "authenticated") return router.push("/");
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!email || !reqMeets) return toast.error(`Please enter ${email ? "a strong password!" : "your email address"}!`);
 
         try {
             setLogging(true);
-            let encodedPwd = base64.encode(password);
-            fetch("/api/signup", {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+
+            await fetch("/api/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, password: encodedPwd }),
+                body: JSON.stringify({ email, password: hashedPassword }),
             })
                 .then((res) => res.json())
                 .then((data) => {
