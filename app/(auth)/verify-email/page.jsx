@@ -80,8 +80,11 @@ export default function Page() {
     };
 
     useEffect(() => {
-        if (status === "authenticated") {
+        if (status == "authenticated") {
             checkVerification();
+        }
+        else{
+            router.push("/login");
         }
     }, [status, session]);
 
