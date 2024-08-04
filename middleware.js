@@ -1,3 +1,5 @@
 export { default } from "next-auth/middleware"
 
-export const config = { matcher: ["/","/verify-email"] }
+export const config = {
+    matcher: ["/", "/verify-email"],
+}

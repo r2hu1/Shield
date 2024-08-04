@@ -36,7 +36,7 @@ export default function Page({params}) {
                 return toast.error("Invalid email or password please try again!");
             }
             const dta = await getStatus({ currentUserEmail: email });
-            if (JSON.parse(dta).status != "verified") return router.push("/verify-email");
+            if (JSON.parse(dta).status == "unverified") return router.push("/verify-email");
             router.push("/");
             setLogging(false);
         } catch (error) {

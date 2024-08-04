@@ -18,7 +18,7 @@ export default function Page() {
         if (!session) return;
         try {
             const dta = await getStatus({ currentUserEmail: session.user.email });
-            if (JSON.parse(dta).status != "verified") {
+            if (JSON.parse(dta).status == "unverified") {
                 setIsVerifyed(false);
                 return router.push("/verify-email");
             }
