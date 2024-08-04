@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import bcrypt from "bcryptjs";
+import EmailTemplate from '@/components/email-template';
+import { render } from '@react-email/components';
 
 export async function POST(request) {
     const { email } = await request.json();
@@ -18,11 +20,12 @@ export async function POST(request) {
         },
     });
 
+    let rndrEm = render(<EmailTemplate validationCode={sixDigitOtp} />);
     let mailOptions = {
         from: process.env.GMAIL_USER,
         to: email,
         subject: "OTP for email verification",
-        text: "Hello, Your OTP for email verification is " + sixDigitOtp,
+        html: rndrEm,
     };
 
     try {

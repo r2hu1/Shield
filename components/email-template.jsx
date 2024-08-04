@@ -19,7 +19,7 @@ export const EmailTemplate = ({
 }) => (
   <Html>
     <Head />
-    <Preview>Your login code for Linear</Preview>
+    <Preview>Your otp for email verification</Preview>
     <Body style={main}>
       <Container style={container}>
         <Heading style={heading}>Your email verification code for Shield</Heading>
