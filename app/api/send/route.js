@@ -1,26 +1,34 @@
-import { EmailTemplate } from '@/components/email-template';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
+import bcrypt from "bcryptjs";
 
 export async function POST(request) {
-    if (!resend) return NextResponse.json({ error: "Resend API Key Not Found" });
-    const vCode = Math.floor(100000 + Math.random() * 900000);
-
     const { email } = await request.json();
-    try {
-        const { data, error } = await resend.emails.send({
-            from: 'onboarding@resend.dev',
-            to: process.env.PRODUCTION == "true" ? email : process.env.RESEND_EMAIL,
-            subject: `OTP for email verification`,
-            react: EmailTemplate({ validationCode: vCode }),
-        });
+    const sixDigitOtp = Math.floor(100000 + Math.random() * 900000);
 
-        if (!data) {
-            return Response.json({ error }, { status: 500 });
-        }
-        return Response.json({ data: vCode });
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(sixDigitOtp.toString(), salt);
+
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASS,
+        },
+    });
+
+    let mailOptions = {
+        from: process.env.GMAIL_USER,
+        to: email,
+        subject: "OTP for email verification",
+        text: "Hello, Your OTP for email verification is " + sixDigitOtp,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        return NextResponse.json({ success: true, otp: hashedPassword });
     } catch (error) {
-        return Response.json({ error }, { status: 500 });
+        return NextResponse.json({ success: false, error: error });
     }
 }
