@@ -1,17 +1,34 @@
 "use client";
 import Header from "@/components/Header";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertTriangle, ExternalLink, ShieldAlert } from "lucide-react";
+import { ExternalLink, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import getStatus from "@/server_functions/userStatus";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Page() {
-    const user = useSession();
     const router = useRouter();
-    if (user.status == "unauthenticated") return router.push("/login");
+    const { data: session, status } = useSession();
+
+    const checkVerification = async () => {
+        if (!session) return;
+        try {
+            const dta = await getStatus({ currentUserEmail: session.user.email });
+            if (JSON.parse(dta).status != "verified") return router.push("/verify-email");
+        }
+        catch (e) {
+            console.log(e)
+        }
+    };
+
+    useEffect(() => {
+        if (status === "authenticated") {
+            checkVerification();
+        }
+    }, [status, session]);
 
     return (
         <main>
@@ -20,11 +37,11 @@ export default function Page() {
                 <Alert>
                     <ShieldAlert className="h-5 w-5" />
                     <AlertTitle>Verification Pending!</AlertTitle>
-                    <AlertDescription className="flex gap-3 items-center justify-between">
+                    <AlertDescription className="grid gap-2">
                         <p className="text-muted-foreground">
                             Please verify your email address to use all settings and features.
                         </p>
-                        <Button className="min-w-10" variant="outline" size="icon" asChild><Link href="/verify-email"><ExternalLink className="h-4 w-4" /></Link></Button>
+                        <Button size="sm" asChild className="w-fit gap-2"><Link href="/verify-email">Verify <ExternalLink className="h-3.5 w-3.5" /></Link></Button>
                     </AlertDescription>
                 </Alert>
             </div>

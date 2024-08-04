@@ -10,8 +10,10 @@ import base64 from "base-64"
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
+import getStatus from "@/server_functions/userStatus";
 
-export default function Page() {
+export default function Page({params}) {
+    console.log(params)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [logging, setLogging] = useState("");
@@ -33,6 +35,8 @@ export default function Page() {
                 setLogging(false);
                 return toast.error("Invalid email or password please try again!");
             }
+            const dta = await getStatus({ currentUserEmail: email });
+            if (JSON.parse(dta).status != "verified") return router.push("/verify-email");
             router.push("/");
             setLogging(false);
         } catch (error) {
