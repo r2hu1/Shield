@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from 'sonner';
 import { AuthProvider } from "./Providers";
 import Preloader from "@/components/Preloader";
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Poppins({
   subsets: ["latin"],
@@ -11,7 +12,10 @@ const inter = Poppins({
 });
 
 export const metadata = {
-  title: "Shield - Password Manager",
+  title: {
+    default: "Shield -Password Manager",
+    template: "%s | Shield - Password Manager",
+  },
   description: "Open source secure password manager.",
 };
 
@@ -26,9 +30,24 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
+            <NextTopLoader
+              color="hsl(var(--primary))"
+              initialPosition={0.08}
+              crawlSpeed={200}
+              height={3}
+              crawl={true}
+              showSpinner={false}
+              easing="ease"
+              speed={200}
+              shadow="0 0 10px hsl(var(--primary)),0 0 5px hsl(var(--primary))"
+              template='<div class="bar" role="bar"><div class="peg"></div></div> 
+  <div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
+              zIndex={1600}
+              showAtBottom={false}
+            />
             {children}
           </ThemeProvider>
-          <Toaster position="top-center"/>
+          <Toaster position="top-center" />
           <Preloader />
         </body>
       </html>
