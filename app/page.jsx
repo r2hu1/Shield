@@ -14,6 +14,7 @@ export default function Page() {
     const [isVerifyed, setIsVerifyed] = useState(true);
     const { data: session, status } = useSession();
 
+
     const checkVerification = async () => {
         if (!session) return;
         try {
@@ -32,6 +33,9 @@ export default function Page() {
     useEffect(() => {
         if (status === "authenticated") {
             checkVerification();
+        }
+        else{
+            router.push("/login");
         }
     }, [status, session]);
 
