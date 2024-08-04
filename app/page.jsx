@@ -38,21 +38,7 @@ export default function Page() {
     return (
         <main>
             <Header />
-            {!isVerifyed && (
-                <div className="px-6 py-6 max-w-lg mx-auto w-fit">
-                    <Alert>
-                        <ShieldAlert className="h-5 w-5" />
-                        <AlertTitle>Verification Pending!</AlertTitle>
-                        <AlertDescription className="grid gap-2">
-                            <p className="text-muted-foreground">
-                                Please verify your email address to use all settings and features.
-                            </p>
-                            <Button size="sm" asChild className="w-fit gap-2"><Link href="/verify-email">Verify <ExternalLink className="h-3.5 w-3.5" /></Link></Button>
-                        </AlertDescription>
-                    </Alert>
-                </div>
-            )}
-            <section className="px-6 py-20">
+            <section className="px-6 py-14">
                 in dev
             </section>
         </main>
