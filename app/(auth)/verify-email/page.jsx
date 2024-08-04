@@ -9,10 +9,11 @@ import {
 import updateStatus from "@/server_functions/updateStatus";
 import getStatus from "@/server_functions/userStatus";
 import { Loader, ShieldHalf } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import bcrypt from "bcryptjs";
 
 export default function Page() {
     const [userOtp, setUserOtp] = useState(null);
@@ -32,7 +33,7 @@ export default function Page() {
             body: JSON.stringify({ email: session.user.email }),
         }).then((data) => data.json()).then((data) => {
             if (data) {
-                setVcs(data.data);
+                setVcs(data.otp);
                 toast.success("OTP sent! check your email");
                 setSnding(false);
                 return true;
@@ -45,19 +46,28 @@ export default function Page() {
 
     const handleVerify = async () => {
         if (!userOtp) return toast.error("Please enter OTP!");
-        if (vcs.toString() !== userOtp) return toast.error("Invalid OTP! Please try again");
+        setVrfing(true);
+        const isMatch = await bcrypt.compare(userOtp, vcs);
+        if (!isMatch) {
+            setVrfing(false);
+            return toast.error("Invalid OTP! Please try again");
+        }
         try {
             const data = await updateStatus({ currentUserEmail: session.user.email, newStatus: "verified" });
-            if (JSON.parse(data)) {
+            if (JSON.parse(data)?.success) {
                 toast.success("Email verified successfully!");
+                setVrfing(false);
                 return router.push("/");
             }
+            setVrfing(false);
+            toast.error("Something went wrong, please try again");
         }
         catch (e) {
+            setVrfing(false);
             console.log(e);
         }
     };
-    
+
     const checkVerification = async () => {
         if (!session) return;
         try {
@@ -96,7 +106,7 @@ export default function Page() {
                         <InputOTPSlot index={5} />
                     </InputOTPGroup>
                 </InputOTP>
-                <p className="text-sm text-muted-foreground flex items-center gap-1 justify-center">Didn't get email? <span className="cursor-pointer hover:opacity-85 underline" onClick={sendOtp}>{snding ? <Loader className="h-3 w-3 animate-spin" /> : "Resend"}</span></p>
+                <p className="text-sm text-muted-foreground flex items-center gap-1 justify-center">Didn't get email? <span className="cursor-pointer hover:opacity-85 underline" onClick={sendOtp} disabled={snding}>{snding ? <Loader className="h-3 w-3 animate-spin" /> : "Resend"}</span></p>
                 <Button onClick={handleVerify} disabled={vrfing}>{vrfing ? <Loader className="h-4 w-4 animate-spin" /> : "Verify"}</Button>
             </div>
         </div>
