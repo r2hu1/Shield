@@ -93,7 +93,7 @@ export default function Page() {
                 ) : null}
                 <div className="grid mt-3">
                     <Button onClick={handleSubmit} disabled={logging}>{logging ? <Loader className="h-4 w-4 animate-spin" /> : "SignUp"}</Button>
-                    <p className="text-sm text-muted-foreground text-center mt-2">Already have one? <Link href="/login" className="underline text-primary">Login</Link></p>
+                    <p className="text-sm text-muted-foreground text-center mt-2">Already have one? <Link href="/login" className="hover:underline text-primary">Login</Link></p>
                 </div>
             </div>
         </div>

@@ -59,9 +59,10 @@ export default function Page({params}) {
                     <Input value={password} onChange={(e) => setPassword(e.target.value)} id="password" placeholder="********" type={viewType} />
                     <Button size="icon" variant="secondary" onClick={() => setViewType(viewType === "password" ? "text" : "password")} className="min-w-10">{viewType != "password" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
                 </div>
+                <p className="text-xs text-muted-foreground">Forgot Password? <Link href="/forgot-password" className="hover:underline text-primary">Reset Password</Link></p>
                 <div className="grid mt-3">
                     <Button onClick={handleSubmit} disabled={logging}>{logging ? <Loader className="h-4 w-4 animate-spin" /> : "Login"}</Button>
-                    <p className="text-sm text-muted-foreground text-center mt-2">Don't have one? <Link href="/signup" className="underline text-primary">SignUp</Link></p>
+                    <p className="text-sm text-muted-foreground text-center mt-2">Don't have one? <Link href="/signup" className="hover:underline text-primary">SignUp</Link></p>
                 </div>
             </div>
         </div>
