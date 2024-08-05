@@ -15,7 +15,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Label } from "@/components/ui/label";
-import { decryptPassword, encryptPassword } from "@/lib/crypto";
+import { decrypt, encrypt } from "@/lib/crypto";
 
 export default function Page() {
     const router = useRouter();
