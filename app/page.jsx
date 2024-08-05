@@ -1,18 +1,26 @@
 "use client";
 import Header from "@/components/Header";
-import { ExternalLink, ShieldAlert } from "lucide-react";
+import { ExternalLink, FilterIcon, Lock, SearchIcon, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import getStatus from "@/server_functions/userStatus";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { Input } from "@/components/ui/input";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Label } from "@/components/ui/label";
+import { decryptPassword, encryptPassword } from "@/lib/crypto";
 
 export default function Page() {
     const router = useRouter();
     const [isVerifyed, setIsVerifyed] = useState(true);
     const { data: session, status } = useSession();
-
 
     const checkVerification = async () => {
         if (!session) return;
@@ -41,7 +49,7 @@ export default function Page() {
     return (
         <main>
             <Header />
-            <section className="px-6 py-10">
+            <section className="px-6 py-10 md:px-20 lg:px-32">
                 {!isVerifyed && (
                     <div className="p-3 rounded border border-border flex items-center gap-3">
                         <div className="flex items-start gap-3">
@@ -56,6 +64,31 @@ export default function Page() {
                         </div>
                     </div>
                 )}
+                <div className="grid gap-3">
+                    <div className="flex items-center gap-3">
+                        <Input type="text" autoComplete="off" placeholder="Google, Facebo.." className="w-full" />
+                        <Button className="min-w-10" size="icon"><SearchIcon className="h-4 w-4 rotate-90" /></Button>
+                    </div>
+                    <Accordion type="single" collapsible>
+                        <AccordionItem value="item-1" className="border-none">
+                            <AccordionTrigger className="text-base hover:no-underline font-normal">
+                                Add a new password
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <div className="p-2 grid gap-2">
+                                    <Label htmlFor="name">Name</Label>
+                                    <Input type="text" id="name" autoComplete="off" placeholder="Google Account" className="w-full" />
+                                    <Label htmlFor="email">Email</Label>
+                                    <Input type="email" id="email" autoComplete="off" placeholder="name@domain.com" className="w-full" />
+                                    <Label htmlFor="password" className="mt-1">Password</Label>
+                                    <Input type="password" id="password" autoComplete="off" placeholder="pass****" className="w-full" />
+                                    <p className="text-xs max-w-md text-muted-foreground">No one can see your email & password even the coder itself, It will be encrypted with highest encryption strength possible!</p>
+                                    <Button className="mt-2">Add</Button>
+                                </div>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                </div>
             </section>
         </main>
     )
