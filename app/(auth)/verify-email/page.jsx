@@ -83,7 +83,7 @@ export default function Page() {
         if (status == "authenticated") {
             checkVerification();
         }
-        else{
+        else {
             router.push("/login");
         }
     }, [status, session]);
@@ -111,6 +111,7 @@ export default function Page() {
                 </InputOTP>
                 <p className="text-sm text-muted-foreground flex items-center gap-1 justify-center">Didn't get email? <span className="cursor-pointer hover:opacity-85 underline" onClick={sendOtp} disabled={snding}>{snding ? <Loader className="h-3 w-3 animate-spin" /> : "Resend"}</span></p>
                 <Button onClick={handleVerify} disabled={vrfing}>{vrfing ? <Loader className="h-4 w-4 animate-spin" /> : "Verify"}</Button>
+                <p className="text-sm text-muted-foreground flex -mt-2 items-center gap-1 justify-center">Wrong email? <span onClick={()=>{signOut({ callbackUrl: "/login" })}} className="underline cursor-pointer">Logout</span></p>
             </div>
         </div>
     );

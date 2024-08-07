@@ -67,7 +67,7 @@ export default function Page() {
                 <Label className="-mb-1" htmlFor="password">Password</Label>
                 <div className="flex items-center gap-2">
                     <Input value={password} onChange={(e) => setPassword(e.target.value)} id="password" placeholder="********" type={viewType} />
-                    <Button size="icon" variant="secondary" onClick={() => setViewType(viewType === "password" ? "text" : "password")} className="min-w-10">{viewType != "password" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
+                    <Button size="icon" variant="secondary" onClick={() => setViewType(viewType === "password" ? "text" : "password")} className="min-w-10">{viewType == "password" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
                 </div>
                 {password.length >= 1 ? (
                     <div className="mt-2 rounded-md border border-border p-3">

@@ -7,9 +7,9 @@ export default function Footer() {
             <div className="grid place-items-center text-center">
                 <div className="flex flex-col gap-1 items-center justify-center">
                     <ShieldHalf className="h-5 w-5 -ml-1" />
-                    <h1 className="text-lg">Shield</h1>
+                    <h1 className="text-base">Shield</h1>
                 </div>
-                <p className="text-sm text-muted-foreground">end to end encrypted password manager</p>
+                <p className="text-xs text-muted-foreground">end to end encrypted password manager</p>
                 <ul className="list-none flex items-center gap-3 mt-2">
                     <li><Link href="/" className="text-sm text-muted-foreground hover:underline">Github</Link></li>
                     <li><Link href="/" className="text-sm text-muted-foreground hover:underline">Fork Repo</Link></li>

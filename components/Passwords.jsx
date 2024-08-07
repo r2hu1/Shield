@@ -149,7 +149,7 @@ export default function Passwords() {
                 </div>
             )}
             {!loading && data.length == 0 && (
-                <div className="flex items-center justify-center h-64">
+                <div className="flex border-border border rounded-md items-center justify-center h-64">
                     <div className="grid place-items-center text-center">
                         <AlertTriangle className="h-6 w-6 mb-1" />
                         <h1 className="text-sm">No Passwords Found</h1>

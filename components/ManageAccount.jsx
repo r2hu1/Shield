@@ -207,7 +207,7 @@ export default function ManageAccount() {
                                 <Label htmlFor="password" className="mt-1 text-primary">Password</Label>
                                 <div className="flex items-center gap-3">
                                     <Input name="password" type={pwdt} id="password" autoComplete="off" placeholder="pass****" className="w-full" />
-                                    <Button size="icon" type="button" className="min-w-10" onClick={() => setPwdt(pwdt === "password" ? "text" : "password")}>{pwdt === "password" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
+                                    <Button size="icon" variant="secondary" type="button" className="min-w-10" onClick={() => setPwdt(pwdt === "password" ? "text" : "password")}>{pwdt === "password" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
                                 </div>
                                 <p className="text-xs max-w-md text-muted-foreground">No one can see your email & password even the coder itself, It will be encrypted with highest encryption strength possible!</p>
                                 <Button type="submit" className="mt-2" disabled={loading3}>{loading3 ? <Loader className="w-4 h-4 animate-spin" /> : "Add Password"}</Button>
