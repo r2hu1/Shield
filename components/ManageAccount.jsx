@@ -30,6 +30,7 @@ import { toast } from "sonner";
 import changePassword from "@/server_functions/user/changePassword";
 import deleteAccount from "@/server_functions/user/deleteAccount";
 import createPassword from "@/server_functions/pwd/createPassword";
+import { revalidatePath } from "next/cache";
 
 export default function ManageAccount() {
     const [mng, setMng] = useState(false);
@@ -100,7 +101,7 @@ export default function ManageAccount() {
                 e.target.reset();
                 toast.success("Password added successfully!");
                 setIsOpen(false);
-                return window.location.reload();
+                return revalidatePath("/");
             }
             setLoading3(false);
             toast.error(JSON.parse(data).error);
