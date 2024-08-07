@@ -1,5 +1,5 @@
 "use client";
-import { Check, FileJson, Loader, Plus, Settings, User, X } from "lucide-react";
+import { Check, Eye, EyeOff, FileJson, Loader, Plus, Settings, User, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { ModeToggle } from "./ThemeSwitcher";
@@ -30,7 +30,6 @@ import { toast } from "sonner";
 import changePassword from "@/server_functions/user/changePassword";
 import deleteAccount from "@/server_functions/user/deleteAccount";
 import createPassword from "@/server_functions/pwd/createPassword";
-import { revalidatePath } from "next/cache";
 
 export default function ManageAccount() {
     const [mng, setMng] = useState(false);
@@ -42,6 +41,7 @@ export default function ManageAccount() {
     const reqMeets = /[A-Z]/.test(newPwd) && /[0-9]/.test(newPwd) && newPwd.length >= 8 && /[!@#$%^&*(){}[\]/?|`~,.;:]/.test(newPwd) ? true : false;
     const [isOpen, setIsOpen] = useState(false);
     const [loading3, setLoading3] = useState(false);
+    const [pwdt, setPwdt] = useState("password");
     const currUser = useSession();
 
     const handleChangePassword = async () => {
@@ -89,19 +89,21 @@ export default function ManageAccount() {
 
     const handleAdd = async (e) => {
         e.preventDefault();
-        setLoading3(true);
         let name = e.target.name.value;
         let email = e.target.email.value;
         let password = e.target.password.value;
         if (!name || !email || !password) return toast.error(`Please enter ${!name ? "name!" : ""} ${!email ? "email or username!" : ""} ${!password ? "password!" : ""}`);
         try {
+            setLoading3(true);
             const data = await createPassword({ currentUserEmail: currUser.data.user.email, name, email, password });
             if (JSON.parse(data).success) {
                 setLoading3(false);
                 e.target.reset();
-                toast.success("Password added successfully!");
                 setIsOpen(false);
-                return revalidatePath("/");
+                toast.success("Password added successfully!")
+                return setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             }
             setLoading3(false);
             toast.error(JSON.parse(data).error);
@@ -203,7 +205,10 @@ export default function ManageAccount() {
                                 <Label htmlFor="email" className="mt-1 text-primary">Email / Username</Label>
                                 <Input name="email" type="text" id="email" autoComplete="off" placeholder="name@domain.com" className="w-full" />
                                 <Label htmlFor="password" className="mt-1 text-primary">Password</Label>
-                                <Input name="password" type="password" id="password" autoComplete="off" placeholder="pass****" className="w-full" />
+                                <div className="flex items-center gap-3">
+                                    <Input name="password" type={pwdt} id="password" autoComplete="off" placeholder="pass****" className="w-full" />
+                                    <Button size="icon" type="button" className="min-w-10" onClick={() => setPwdt(pwdt === "password" ? "text" : "password")}>{pwdt === "password" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
+                                </div>
                                 <p className="text-xs max-w-md text-muted-foreground">No one can see your email & password even the coder itself, It will be encrypted with highest encryption strength possible!</p>
                                 <Button type="submit" className="mt-2" disabled={loading3}>{loading3 ? <Loader className="w-4 h-4 animate-spin" /> : "Add Password"}</Button>
                             </form>
