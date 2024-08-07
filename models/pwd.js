@@ -1,6 +1,10 @@
 import { Schema, models, model } from "mongoose";
 
 const pwdSchema = new Schema({
+    name: {
+        type: String,
+        default: "Account",
+    },
     email: {
         type: String,
         required: true,
@@ -9,9 +13,9 @@ const pwdSchema = new Schema({
         type: String,
         required: true,
     },
-    name: {
+    owner: {
         type: String,
-        default: "Account",
+        required: true,
     }
 });
 

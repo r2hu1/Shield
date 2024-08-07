@@ -13,10 +13,24 @@ const inter = Poppins({
 
 export const metadata = {
   title: {
-    default: "Shield -Password Manager",
+    default: "Shield - Password Manager",
     template: "%s | Shield - Password Manager",
   },
   description: "Open source secure password manager.",
+  icons: {
+    icon: [
+      {
+        media: '(prefers-color-scheme: dark)',
+        url: '/logo.png',
+        href: '/logo.png',
+      },
+      {
+        media: '(prefers-color-scheme: light)',
+        url: '/logo-light.png',
+        href: '/logo-light.png',
+      },
+    ],
+  }
 };
 
 export default function RootLayout({ children }) {
