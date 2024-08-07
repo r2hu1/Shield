@@ -91,7 +91,7 @@ export default function Passwords() {
         getData();
     }, []);
     return (
-        <div className="h-[450px]">
+        <div className="min-h-[450px]">
             <div className="grid gap-3">
                 <div className="mb-2">
                     <h1 className="text-lg font-medium flex items-center justify-between">Saved Passwords <Button onClick={() => window.location.reload()} size="icon" variant="outline" className="h-7 w-7 p-0"><RotateCw className="h-3.5 w-3.5" /></Button></h1>
