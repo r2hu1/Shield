@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { AlertTriangle, Copy, Eye, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
-import { FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaCloudflare, FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
     Dialog,
     DialogContent,
@@ -22,6 +22,7 @@ import { SiMinecraft } from "react-icons/si";
 import { GiSwordClash } from "react-icons/gi";
 import { FaXTwitter } from "react-icons/fa6";
 import deletePassword from "@/server_functions/pwd/deletePassword";
+import { Skeleton } from "./ui/skeleton";
 
 export default function Passwords() {
     const [data, setData] = useState([]);
@@ -45,6 +46,7 @@ export default function Passwords() {
         "youtube": <FaYoutube className="h-4 w-4" />,
         "quora": <FaQuora className="h-4 w-4" />,
         "stackoverflow": <FaStackOverflow className="h-4 w-4" />,
+        "cloudflare": <FaCloudflare className="h-4 w-4" />,
         "account": <FaRegUser className="h-4 w-4" />,
     };
 
@@ -150,8 +152,14 @@ export default function Passwords() {
                         </div>
                     )
                 }) : (
-                    <div className="flex items-center justify-center h-64">
-                        <Loader className="h-5 w-5 animate-spin" />
+                    <div className="grid gap-3">
+                        <Skeleton className="h-16 rounded-md w-full"/>
+                        <Skeleton className="h-16 rounded-md w-full"/>
+                        <Skeleton className="h-16 rounded-md w-full"/>
+                        <Skeleton className="h-16 rounded-md w-full"/>
+                        <Skeleton className="h-16 rounded-md w-full"/>
+                        <Skeleton className="h-16 rounded-md w-full"/>
+                        <Skeleton className="h-16 rounded-md w-full"/>
                     </div>
                 )}
                 {!loading && data.length == 0 && (
