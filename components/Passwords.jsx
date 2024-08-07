@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { AlertTriangle, Copy, Eye, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
-import { FaFacebook, FaGithub, FaGoogle, FaInstagram, FaMicrosoft, FaRegUser, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
     Dialog,
     DialogContent,
@@ -40,6 +40,11 @@ export default function Passwords() {
         "microsoft": <FaMicrosoft className="h-4 w-4" />,
         "minecraft": <SiMinecraft className="h-4 w-4" />,
         "coc": <GiSwordClash className="h-4 w-4" />,
+        "clash of clans": <GiSwordClash className="h-4 w-4" />,
+        "linkedin": <FaLinkedin className="h-4 w-4" />,
+        "youtube": <FaYoutube className="h-4 w-4" />,
+        "quora": <FaQuora className="h-4 w-4" />,
+        "stackoverflow": <FaStackOverflow className="h-4 w-4" />,
         "account": <FaRegUser className="h-4 w-4" />,
     };
 
@@ -93,7 +98,7 @@ export default function Passwords() {
             </div>
             {!loading ? data && data.map((item, i) => {
                 return (
-                    <div key={i}>
+                    <div key={i} className="h-64">
                         <div className="flex items-center justify-between border border-border p-3 rounded-md">
                             <div className="flex items-center">
                                 <div className="w-10 items-center flex justify-center mr-3">
