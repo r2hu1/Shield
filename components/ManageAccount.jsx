@@ -1,5 +1,5 @@
 "use client";
-import { Check, FileJson, Loader, Settings, User, X } from "lucide-react";
+import { Check, FileJson, Loader, Plus, Settings, User, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { ModeToggle } from "./ThemeSwitcher";
@@ -29,6 +29,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import changePassword from "@/server_functions/user/changePassword";
 import deleteAccount from "@/server_functions/user/deleteAccount";
+import createPassword from "@/server_functions/pwd/createPassword";
 
 export default function ManageAccount() {
     const [mng, setMng] = useState(false);
@@ -38,6 +39,8 @@ export default function ManageAccount() {
     const [loading, setLoading] = useState("");
     const [loadingd, setLoadingD] = useState(false);
     const reqMeets = /[A-Z]/.test(newPwd) && /[0-9]/.test(newPwd) && newPwd.length >= 8 && /[!@#$%^&*(){}[\]/?|`~,.;:]/.test(newPwd) ? true : false;
+    const [isOpen, setIsOpen] = useState(false);
+    const [loading3, setLoading3] = useState(false);
     const currUser = useSession();
 
     const handleChangePassword = async () => {
@@ -83,6 +86,30 @@ export default function ManageAccount() {
         }
     };
 
+    const handleAdd = async (e) => {
+        e.preventDefault();
+        setLoading3(true);
+        let name = e.target.name.value;
+        let email = e.target.email.value;
+        let password = e.target.password.value;
+        if (!name || !email || !password) return toast.error(`Please enter ${!name ? "name!" : ""} ${!email ? "email or username!" : ""} ${!password ? "password!" : ""}`);
+        try {
+            const data = await createPassword({ currentUserEmail: currUser.data.user.email, name, email, password });
+            if (JSON.parse(data).success) {
+                setLoading3(false);
+                e.target.reset();
+                toast.success("Password added successfully!");
+                setIsOpen(false);
+                return window.location.reload();
+            }
+            setLoading3(false);
+            toast.error(JSON.parse(data).error);
+        }
+        catch (e) {
+            setLoading3(false);
+            console.log(e);
+        }
+    }
     return (
         <>
             <DropdownMenu>
@@ -93,7 +120,7 @@ export default function ManageAccount() {
                     <DropdownMenuItem onClick={() => setMng(true)} className="justify-between">Account <User className="h-4 w-4" /></DropdownMenuItem>
                     <DropdownMenuItem asChild><ModeToggle /></DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="justify-between" onClick={() => setImpr(true)}>Import <FileJson className="h-4 w-4" /></DropdownMenuItem>
+                    <DropdownMenuItem className="justify-between" onClick={() => setIsOpen(true)}>Add New <Plus className="h-4 w-4" /></DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
             <AlertDialog open={mng}>
@@ -163,17 +190,22 @@ export default function ManageAccount() {
                 </AlertDialogContent>
             </AlertDialog>
 
-            <AlertDialog open={impr}>
+            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle className="text-left relative">Import passwords <X onClick={() => setImpr(false)} className="h-4 w-4 absolute -top-3 -right-3 cursor-pointer hover:opacity-85" /></AlertDialogTitle>
+                        <AlertDialogTitle className="text-left relative">Add new password <X onClick={() => setIsOpen(false)} className="h-4 w-4 absolute -top-3 -right-3 cursor-pointer hover:opacity-85" /></AlertDialogTitle>
                         <AlertDialogDescription className="text-left">
-                            Import passwords from your or your friends encrypted json.
-
-                            <div className="mt-5 grid gap-3">
-                                <Input type="file" accept=".json" />
-                                <Button>Import</Button>
-                            </div>
+                            <p className="text-sm text-muted-foreground -mt-1">The email and password will be encrypted with higest encryption strength possible and cannot be decrypted by anyone except you.</p>
+                            <form onSubmit={handleAdd} method="post" className="grid gap-2 mt-4">
+                                <Label className="text-primary" htmlFor="name">Name</Label>
+                                <Input name="name" type="text" id="name" autoComplete="off" placeholder="Google Account" className="w-full" />
+                                <Label htmlFor="email" className="mt-1 text-primary">Email / Username</Label>
+                                <Input name="email" type="text" id="email" autoComplete="off" placeholder="name@domain.com" className="w-full" />
+                                <Label htmlFor="password" className="mt-1 text-primary">Password</Label>
+                                <Input name="password" type="password" id="password" autoComplete="off" placeholder="pass****" className="w-full" />
+                                <p className="text-xs max-w-md text-muted-foreground">No one can see your email & password even the coder itself, It will be encrypted with highest encryption strength possible!</p>
+                                <Button type="submit" className="mt-2" disabled={loading3}>{loading3 ? <Loader className="w-4 h-4 animate-spin" /> : "Add Password"}</Button>
+                            </form>
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                 </AlertDialogContent>
