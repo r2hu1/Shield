@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Passwords from "@/components/Passwords";
+import Footer from "@/components/Footer";
 
 export default function Page() {
     const router = useRouter();
@@ -56,8 +57,9 @@ export default function Page() {
                         </div>
                     </div>
                 )}
-                <Passwords/>
+                <Passwords />
             </section>
+            <Footer/>
         </main>
     )
 }
