@@ -9,6 +9,7 @@ export default async function getPassword({ currentUserEmail }) {
         await connectDB();
         const user = await User.findOne({ email: currentUserEmail });
         if (!user) return JSON.stringify({ success: false, error: "User not found" });
+        if (user.status != "verified") return JSON.stringify({ success: false, error: "Email is not verified" });
         const crPwd = await Pwd.find({ owner: user._id });
         if (crPwd) return JSON.stringify({ success: true, data: crPwd });
         return JSON.stringify({ success: false, error: "Something went wrong" });

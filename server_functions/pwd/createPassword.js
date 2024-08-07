@@ -10,7 +10,6 @@ export default async function createPassword({ currentUserEmail, name, email, pa
         await connectDB();
         const user = await User.findOne({ email: currentUserEmail });
         if (!user) return JSON.stringify({ success: false, error: "User not found" });
-        console.log(user.status);
         if (user.status != "verified") return JSON.stringify({ success: false, error: "Email is not verified" });
         let encryptedPassword = encrypt(password);
         let encryptedEMail = encrypt(email);
