@@ -11,9 +11,9 @@ export default function Footer() {
                 </div>
                 <p className="text-xs text-muted-foreground">end to end encrypted password manager</p>
                 <ul className="list-none flex items-center gap-3 mt-2">
-                    <li><Link href="/" className="text-sm text-muted-foreground hover:underline">Github</Link></li>
-                    <li><Link href="/" className="text-sm text-muted-foreground hover:underline">Fork Repo</Link></li>
-                    <li><Link href="/" className="text-sm text-muted-foreground hover:underline">Open Issue</Link></li>
+                    <li><Link href="https://github.com/r2hu1/shield" className="text-sm text-muted-foreground hover:underline">Github</Link></li>
+                    <li><Link href="https://github.com/r2hu1/shield/fork" className="text-sm text-muted-foreground hover:underline">Fork Repo</Link></li>
+                    <li><Link href="https://github.com/r2hu1/shield/issues" className="text-sm text-muted-foreground hover:underline">Open Issue</Link></li>
                 </ul>
             </div>
         </footer>
