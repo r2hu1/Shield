@@ -27,8 +27,8 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
-import changePassword from "@/server_functions/changePassword";
-import deleteAccount from "@/server_functions/deleteAccount";
+import changePassword from "@/server_functions/user/changePassword";
+import deleteAccount from "@/server_functions/user/deleteAccount";
 
 export default function ManageAccount() {
     const [mng, setMng] = useState(false);

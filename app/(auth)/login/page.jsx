@@ -10,7 +10,7 @@ import base64 from "base-64"
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
-import getStatus from "@/server_functions/userStatus";
+import getStatus from "@/server_functions/user/userStatus";
 
 export default function Page({params}) {
     console.log(params)

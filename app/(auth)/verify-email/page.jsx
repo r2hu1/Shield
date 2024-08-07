@@ -6,8 +6,8 @@ import {
     InputOTPSeparator,
     InputOTPSlot,
 } from "@/components/ui/input-otp";
-import updateStatus from "@/server_functions/updateStatus";
-import getStatus from "@/server_functions/userStatus";
+import updateStatus from "@/server_functions/user/updateStatus";
+import getStatus from "@/server_functions/user/userStatus";
 import { Loader, ShieldHalf } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";

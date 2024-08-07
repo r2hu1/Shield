@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import { ExternalLink, FilterIcon, Lock, SearchIcon, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import getStatus from "@/server_functions/userStatus";
+import getStatus from "@/server_functions/user/userStatus";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
