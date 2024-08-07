@@ -30,6 +30,10 @@ screenshots of the application.
 
 ![add](/public/add.png)
 
+### View password
+
+![view](/public/view.png)
+
 ### Manage
 
 ![manage](/public/manage.png)
