@@ -20,4 +20,4 @@ const pwdSchema = new Schema({
 });
 
 const Pwd = models.Pwd || model("Pwd", pwdSchema);
-export default User;
+export default Pwd;
