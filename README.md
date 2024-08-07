@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Shield - Password Manager
 
-## Getting Started
+Open-source secure password manager with encryption, authentication and email verification.
 
-First, run the development server:
+## Screenshots
+
+screenshots of the application.
+
+### Login
+
+![login](/public/login.png)
+
+### Signup
+
+![signup](/public/signup.png)
+
+### Email Verification
+
+![otp](/public/otp.png)
+
+### Emai
+
+![email](/public/email.png)
+
+### Dashboard after adding passwords
+
+![dash](/public/pwd.png)
+
+### Add new password
+
+![add](/public/add.png)
+
+### Manage
+
+![manage](/public/manage.png)
+
+## Technologies used
+
+- Next.js
+- MongoDB
+- Node.js
+- TailwindCSS
+- EmailJS
+- Nodemailer
+- Crypto
+- BcryptJS
+
+## Setup Guide
+
+- Fork this repo
+- Clone the repo locally
+
+```bash
+git clone https://github.com/[username]/shield.git
+```
+
+- Install dependencies
+
+```bash
+npm install
+```
+
+- Setup Mongodb
+- Add app from your google account from account manage page and copy the 16 digits password and your email
+
+- Setup env variables
+
+```bash
+MONGO_URI=''
+NEXTAUTH_SECRET=''
+NEXTAUTH_URL=''
+
+GMAIL_USER='' // your email
+GMAIL_PASS='' // app password
+
+ENCRYPTION_KEY=''
+```
+
+- Start the application
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Open `http://localhost:3000` in your browser
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Contribution
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Fork the repo
+- Checkout to branch
+- Code whatever you want to add
 
-## Learn More
+Submit a pull request i will review it and merge it
 
-To learn more about Next.js, take a look at the following resources:
+## Sponser
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<iframe src="https://github.com/sponsors/r2hu1/button" title="Sponsor r2hu1" height="32" width="114" style="border: 0; border-radius: 6px;"></iframe>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="r2hu1" data-color="#FFDD00" data-emoji="☕"  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
