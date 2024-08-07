@@ -2,10 +2,9 @@
 
 import getPassword from "@/server_functions/pwd/getPassword";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { AlertTriangle, Copy, Eye, Loader, X } from "lucide-react";
+import { AlertTriangle, Copy, Eye, Loader, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
 import { FaFacebook, FaGithub, FaGoogle, FaInstagram, FaMicrosoft, FaRegUser, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
@@ -19,6 +18,9 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { toast } from "sonner";
+import { SiMinecraft } from "react-icons/si";
+import { GiSwordClash } from "react-icons/gi";
+import { FaXTwitter } from "react-icons/fa6";
 
 export default function Passwords() {
     const [data, setData] = useState([]);
@@ -30,10 +32,12 @@ export default function Passwords() {
         "google": <FaGoogle className="h-4 w-4" />,
         "facebook": <FaFacebook className="h-4 w-4" />,
         "instagram": <FaInstagram className="h-4 w-4" />,
-        "x": <X className="h-4 w-4" />,
+        "x": <FaXTwitter className="h-4 w-4" />,
         "twitter": <FaTwitter className="h-4 w-4" />,
         "youtube": <FaYoutube className="h-4 w-4" />,
         "microsoft": <FaMicrosoft className="h-4 w-4" />,
+        "minecraft": <SiMinecraft className="h-4 w-4" />,
+        "coc": <GiSwordClash className="h-4 w-4" />,
         "account": <FaRegUser className="h-4 w-4" />,
     };
 
@@ -104,8 +108,8 @@ export default function Passwords() {
                                                     </div>
                                                     <div className="flex items-center gap-2 mt-2">
                                                         <Button onClick={() => { navigator.clipboard.writeText(JSON.stringify({ "name": item.name, "email": decrypt(item.email), "password": decrypt(item.password) })); toast.success(`Copied ${item.name} to clipboard`) }}>Copy All</Button>
-                                                        <Button onClick={() => navigator.share({ "title": `${item.name} Account`, "text": `Name: ${item.name}\nEmail: ${decrypt(item.email)}\nPassword: ${decrypt(item.password)}` })} variant="outline" className="text-primary border-primary">Share</Button>
-                                                        <Button variant="outline" className="text-red-400 border-red-400 hover:text-red-400">Delete</Button>
+                                                        <Button size="icon" onClick={() => navigator.share({ "title": `${item.name} Account`, "text": `Name: ${item.name}\nEmail: ${decrypt(item.email)}\nPassword: ${decrypt(item.password)}` })} variant="outline" className="text-primary border-primary"><Share2 className="h-4 w-4" /></Button>
+                                                        <Button size="icon" variant="outline" className="text-red-400 border-red-400 hover:text-red-400"><Trash className="h-4 w-4" /></Button>
                                                     </div>
                                                 </div>
                                             </DialogDescription>
@@ -124,7 +128,7 @@ export default function Passwords() {
             {!loading && data.length == 0 && (
                 <div className="flex items-center justify-center h-64">
                     <div className="grid place-items-center text-center">
-                        <AlertTriangle className="h-6 w-6 mb-1"/>
+                        <AlertTriangle className="h-6 w-6 mb-1" />
                         <h1 className="text-sm">No Passwords Found</h1>
                         <p className="text-xs text-muted-foreground">Add by clicking Add New on the setting button</p>
                     </div>
