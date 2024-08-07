@@ -4,7 +4,7 @@ import getPassword from "@/server_functions/pwd/getPassword";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { AlertTriangle, Copy, Eye, Loader, Share2, Trash, X } from "lucide-react";
+import { AlertTriangle, Copy, Eye, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
 import { FaFacebook, FaGithub, FaGoogle, FaInstagram, FaMicrosoft, FaRegUser, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
@@ -21,10 +21,12 @@ import { toast } from "sonner";
 import { SiMinecraft } from "react-icons/si";
 import { GiSwordClash } from "react-icons/gi";
 import { FaXTwitter } from "react-icons/fa6";
+import deletePassword from "@/server_functions/pwd/deletePassword";
 
 export default function Passwords() {
     const [data, setData] = useState([]);
     const [loading, setloading] = useState(true);
+    const [loading2, setloading2] = useState(false);
     const user = useSession();
 
     const icons = {
@@ -59,14 +61,35 @@ export default function Passwords() {
             return e;
         }
     };
+
+    const handleDelete = async (id) => {
+        try {
+            if (!user) return;
+            setloading2(true);
+            let del = await deletePassword({ currentUserEmail: user.data.user.email, id: id });
+            if (JSON.parse(del).success) {
+                toast.success("Password deleted successfully!");
+                setloading2(false);
+                return getData();
+            }
+            setloading2(false);
+            toast.error(JSON.parse(del).error);
+            return JSON.parse(del).error;
+        }
+        catch (e) {
+            setloading2(false);
+            return e;
+        }
+    };
+
     useEffect(() => {
         getData();
     }, []);
     return (
         <div className="grid gap-3">
             <div className="mb-2">
-                <h1 className="text-lg font-medium">Saved Passwords</h1>
-                <p className="text-sm text-muted-foreground max-w-md">your saved passwords is encrypted and it can be decrypt only by you.</p>
+                <h1 className="text-lg font-medium flex items-center justify-between">Saved Passwords <Button onClick={() => window.location.reload()} size="icon" variant="outline" className="h-7 w-7 p-0"><RotateCw className="h-3.5 w-3.5"/></Button></h1>
+                <p className="text-sm mt-1 text-muted-foreground max-w-md">your saved passwords is encrypted and it can be decrypt only by you.</p>
             </div>
             {!loading ? data && data.map((item, i) => {
                 return (
@@ -109,7 +132,7 @@ export default function Passwords() {
                                                     <div className="flex items-center gap-2 mt-2">
                                                         <Button onClick={() => { navigator.clipboard.writeText(JSON.stringify({ "name": item.name, "email": decrypt(item.email), "password": decrypt(item.password) })); toast.success(`Copied ${item.name} to clipboard`) }}>Copy All</Button>
                                                         <Button size="icon" onClick={() => navigator.share({ "title": `${item.name} Account`, "text": `Name: ${item.name}\nEmail: ${decrypt(item.email)}\nPassword: ${decrypt(item.password)}` })} variant="outline" className="text-primary border-primary"><Share2 className="h-4 w-4" /></Button>
-                                                        <Button size="icon" variant="outline" className="text-red-400 border-red-400 hover:text-red-400"><Trash className="h-4 w-4" /></Button>
+                                                        <Button onClick={() => { handleDelete(item._id) }} size="icon" variant="outline" className="text-red-400 border-red-400 hover:text-red-400" disabled={loading2}>{loading2 ? <Loader className="h-4 w-4 animate-spin" /> : <Trash className="h-4 w-4" />}</Button>
                                                     </div>
                                                 </div>
                                             </DialogDescription>
