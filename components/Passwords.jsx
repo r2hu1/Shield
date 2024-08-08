@@ -89,6 +89,26 @@ export default function Passwords() {
         }
     };
 
+    const passStrength = (str) => {
+        let strength = 0;
+        if (str.length >= 8) {
+            strength += 25;
+        }
+        if (/[a-z]/.test(str)) {
+            strength += 20;
+        }
+        if (/[A-Z]/.test(str)) {
+            strength += 20;
+        }
+        if (/\d/.test(str)) {
+            strength += 20;
+        }
+        if (/[\W_]/.test(str)) {
+            strength += 15;
+        }
+        return Math.min(strength, 100);
+    }
+
     useEffect(() => {
         getData();
     }, []);
@@ -110,6 +130,7 @@ export default function Passwords() {
                                     <div>
                                         <h1 className="text-base">{item.name}</h1>
                                         <p className="text-xs text-muted-foreground">{decrypt(item.email)}</p>
+                                        {/* <span className="text-sm">Strength {passStrength(decrypt(item.password))}%</span> */}
                                     </div>
                                 </div>
                                 <div>
@@ -123,7 +144,7 @@ export default function Passwords() {
                                             <DialogHeader>
                                                 <DialogTitle className="text-left">Viewing {item.name} Account</DialogTitle>
                                                 <DialogDescription className="text-left">
-                                                    <p className="text-sm text-muted-foreground">Copy, share, edit or delete your {item.name} account.</p>
+                                                    <p className="text-sm text-muted-foreground">Copy, share or delete your {item.name} account.</p>
                                                     <div className="mt-5 grid gap-3">
                                                         <Label htmlFor="name" className="text-primary -mb-1">Name</Label>
                                                         <Input type="text" id="name" value={item.name} readOnly className="w-full text-primary border-border" />
@@ -153,13 +174,13 @@ export default function Passwords() {
                     )
                 }) : (
                     <div className="grid gap-3">
-                        <Skeleton className="h-16 rounded-md w-full"/>
-                        <Skeleton className="h-16 rounded-md w-full"/>
-                        <Skeleton className="h-16 rounded-md w-full"/>
-                        <Skeleton className="h-16 rounded-md w-full"/>
-                        <Skeleton className="h-16 rounded-md w-full"/>
-                        <Skeleton className="h-16 rounded-md w-full"/>
-                        <Skeleton className="h-16 rounded-md w-full"/>
+                        <Skeleton className="h-16 rounded-md w-full" />
+                        <Skeleton className="h-16 rounded-md w-full" />
+                        <Skeleton className="h-16 rounded-md w-full" />
+                        <Skeleton className="h-16 rounded-md w-full" />
+                        <Skeleton className="h-16 rounded-md w-full" />
+                        <Skeleton className="h-16 rounded-md w-full" />
+                        <Skeleton className="h-16 rounded-md w-full" />
                     </div>
                 )}
                 {!loading && data.length == 0 && (
