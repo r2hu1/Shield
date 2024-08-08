@@ -131,20 +131,9 @@ export default function ManageAccount() {
                     <AlertDialogHeader>
                         <AlertDialogTitle className="text-left relative">Manage your account <X onClick={() => setMng(false)} className="h-4 w-4 absolute -top-3 -right-3 cursor-pointer hover:opacity-85" /></AlertDialogTitle>
                         <AlertDialogDescription className="text-left">
-                            Manage your saved passwords, change your password, or delete your account.
+                            Manage your account, change your password, or delete your account.
                             <Accordion type="single" collapsible>
                                 <AccordionItem value="item-1">
-                                    <AccordionTrigger className="text-primary">Saved passwords</AccordionTrigger>
-                                    <AccordionContent>
-                                        Delete your saved passwords or export them as json.
-                                        <div className="flex items-center gap-2 mt-2">
-                                            <Button>Export</Button>
-                                            <Button variant="outline">Delete all</Button>
-                                        </div>
-                                    </AccordionContent>
-                                </AccordionItem>
-
-                                <AccordionItem value="item-2">
                                     <AccordionTrigger className="text-primary">Change your account's password</AccordionTrigger>
                                     <AccordionContent>
                                         <div className="grid gap-2 mt-2 px-1">
@@ -179,7 +168,7 @@ export default function ManageAccount() {
                                     </AccordionContent>
                                 </AccordionItem>
 
-                                <AccordionItem value="item-3">
+                                <AccordionItem value="item-2">
                                     <AccordionTrigger className="text-primary">Delete your account</AccordionTrigger>
                                     <AccordionContent className="grid">
                                         Permanently delete your account, this action cannot be undone.
