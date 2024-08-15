@@ -93,7 +93,8 @@ export default function Page() {
             <div className="grid gap-2 mb-4 place-items-center">
                 <ShieldHalf className="h-8 w-8" />
                 <h1 className="text-lg -mb-2">Enter OTP</h1>
-                <p className="text-sm text-muted-foreground max-w-sm">Enter 6 digits one time password (OTP) sent to your email address!</p>
+                <p className="text-sm text-muted-foreground max-w-sm">Enter 6 digits one time password (OTP) sent to your email address!
+                    Wrong email? <span onClick={() => { signOut({ callbackUrl: "/login" }) }} className="underline cursor-pointer text-primary">Logout</span></p>
             </div>
             <div className="grid w-fit gap-3 mx-auto">
                 <InputOTP maxLength={6} value={userOtp} onChange={setUserOtp}>
@@ -109,9 +110,8 @@ export default function Page() {
                         <InputOTPSlot index={5} />
                     </InputOTPGroup>
                 </InputOTP>
-                <p className="text-sm text-muted-foreground flex items-center gap-1 justify-center">Didn't get email? <span className="cursor-pointer hover:opacity-85 underline" onClick={sendOtp} disabled={snding}>{snding ? <Loader className="h-3 w-3 animate-spin" /> : "Resend"}</span></p>
+                <p className="text-sm text-muted-foreground flex items-center gap-1 justify-center">Didn't get email? <span className="cursor-pointer text-primary hover:opacity-85 underline" onClick={sendOtp} disabled={snding}>{snding ? <Loader className="h-3 w-3 animate-spin" /> : "Resend"}</span></p>
                 <Button onClick={handleVerify} disabled={vrfing}>{vrfing ? <Loader className="h-4 w-4 animate-spin" /> : "Verify"}</Button>
-                <p className="text-sm text-muted-foreground flex -mt-2 items-center gap-1 justify-center">Wrong email? <span onClick={()=>{signOut({ callbackUrl: "/login" })}} className="underline cursor-pointer">Logout</span></p>
             </div>
         </div>
     );
