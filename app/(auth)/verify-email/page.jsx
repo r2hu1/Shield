@@ -34,7 +34,6 @@ export default function Page() {
         }).then((data) => data.json()).then((data) => {
             if (data) {
                 setVcs(data.otp);
-                toast.success("OTP sent! check your email");
                 setSnding(false);
                 return true;
             }
@@ -94,7 +93,7 @@ export default function Page() {
                 <ShieldHalf className="h-8 w-8" />
                 <h1 className="text-lg -mb-2">Enter OTP</h1>
                 <p className="text-sm text-muted-foreground max-w-sm">Enter 6 digits one time password (OTP) sent to your email address!
-                    Wrong email? <span onClick={() => { signOut({ callbackUrl: "/login" }) }} className="underline cursor-pointer text-primary">Logout</span></p>
+                    Wrong email? <span onClick={() => { toast.promise(signOut({ callbackUrl: "/" }), { loading: "Logging out...", success: "Logged out!", error: "Something went wrong!" }) }} className="underline cursor-pointer text-primary">Logout</span></p>
             </div>
             <div className="grid w-fit gap-3 mx-auto">
                 <InputOTP maxLength={6} value={userOtp} onChange={setUserOtp}>
@@ -110,7 +109,7 @@ export default function Page() {
                         <InputOTPSlot index={5} />
                     </InputOTPGroup>
                 </InputOTP>
-                <p className="text-sm text-muted-foreground flex items-center gap-1 justify-center">Didn't get email? <span className="cursor-pointer text-primary hover:opacity-85 underline" onClick={sendOtp} disabled={snding}>{snding ? <Loader className="h-3 w-3 animate-spin" /> : "Resend"}</span></p>
+                <p className="text-sm text-muted-foreground flex items-center gap-1 justify-center">Didn't get email? <span className="cursor-pointer text-primary hover:opacity-85 underline" onClick={()=>{toast.promise(sendOtp(), { loading: "Sending OTP...", success: "OTP sent! check your email", error: "Something went wrong!" })}} disabled={snding}>{snding ? <Loader className="h-3 w-3 animate-spin" /> : "Resend"}</span></p>
                 <Button onClick={handleVerify} disabled={vrfing}>{vrfing ? <Loader className="h-4 w-4 animate-spin" /> : "Verify"}</Button>
             </div>
         </div>
