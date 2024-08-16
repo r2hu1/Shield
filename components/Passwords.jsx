@@ -194,7 +194,7 @@ export default function Passwords() {
                             </div>
                         )
                     }) : (
-                        <div className="grid gap-3">
+                        <>
                             <Skeleton className="h-16 rounded-md w-full" />
                             <Skeleton className="h-16 rounded-md w-full" />
                             <Skeleton className="h-16 rounded-md w-full" />
@@ -202,7 +202,8 @@ export default function Passwords() {
                             <Skeleton className="h-16 rounded-md w-full" />
                             <Skeleton className="h-16 rounded-md w-full" />
                             <Skeleton className="h-16 rounded-md w-full" />
-                        </div>
+                            <Skeleton className="h-16 rounded-md w-full" />
+                        </>
                     )}
                 </div>
                 {!loading && data.length == 0 && (
