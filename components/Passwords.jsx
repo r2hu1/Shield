@@ -175,7 +175,7 @@ export default function Passwords() {
                                                                 </PopoverTrigger>
                                                                 <PopoverContent>
                                                                     <p className="text-sm text-muted-foreground mb-3">
-                                                                        Are you sure you want to delete {item.name}? this action cannot be undone.
+                                                                        Are you sure you want to delete <span className="text-primary underline">{item.name}?</span> <br/> This action cannot be undone.
                                                                     </p>
                                                                     <Button onClick={() => { handleDelete(item._id) }} disabled={loading2} size="sm" variant="destructive">{loading2 ? <Loader className="h-4 w-4 animate-spin" /> : "Delete"}</Button>
                                                                 </PopoverContent>
