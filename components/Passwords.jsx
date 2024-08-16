@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { AlertTriangle, Clipboard, Eye, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
-import { FaCloudflare, FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaCloudflare, FaDiscord, FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaReddit, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -55,6 +55,8 @@ export default function Passwords() {
         "quora": <FaQuora className="h-4 w-4" />,
         "stackoverflow": <FaStackOverflow className="h-4 w-4" />,
         "cloudflare": <FaCloudflare className="h-4 w-4" />,
+        "reddit": <FaReddit className="h-4 w-4" />,
+        "discord": <FaDiscord className="h-4 w-4" />,
         "account": <FaRegUser className="h-4 w-4" />,
     };
 
@@ -175,7 +177,7 @@ export default function Passwords() {
                                                                 </PopoverTrigger>
                                                                 <PopoverContent>
                                                                     <p className="text-sm text-muted-foreground mb-3">
-                                                                        Are you sure you want to delete <span className="text-primary underline">{item.name}?</span> <br/> This action cannot be undone.
+                                                                        Are you sure you want to delete <span className="text-primary underline">{item.name}?</span> <br /> This action cannot be undone.
                                                                     </p>
                                                                     <Button onClick={() => { handleDelete(item._id) }} disabled={loading2} size="sm" variant="destructive">{loading2 ? <Loader className="h-4 w-4 animate-spin" /> : "Delete"}</Button>
                                                                 </PopoverContent>
