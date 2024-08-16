@@ -184,7 +184,7 @@ export default function ManageAccount() {
                                             </PopoverTrigger>
                                             <PopoverContent>
                                                 <p className="text-sm text-muted-foreground mb-2">Are you sure you want to permanently delete your account? <br /> This action cannot be undone.</p>
-                                                <Button size="sm" onClick={handleDeleteAccount} disabled={loadingd}>{loadingd ? <Loader className="h-4 w-4 animate-spin" /> : 'Delete'}</Button>
+                                                <Button size="sm" variant="destructive" onClick={handleDeleteAccount} disabled={loadingd}>{loadingd ? <Loader className="h-4 w-4 animate-spin" /> : 'Delete'}</Button>
                                             </PopoverContent>
                                         </Popover>
                                     </AccordionContent>
