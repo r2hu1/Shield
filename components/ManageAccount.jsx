@@ -1,5 +1,5 @@
 "use client";
-import { Check, Eye, EyeOff, FileJson, Loader, Plus, Settings, User, X } from "lucide-react";
+import { Check, Eye, EyeOff, FileJson, Loader, Plus, Settings, Trash, User, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { ModeToggle } from "./ThemeSwitcher";
@@ -30,6 +30,12 @@ import { toast } from "sonner";
 import changePassword from "@/server_functions/user/changePassword";
 import deleteAccount from "@/server_functions/user/deleteAccount";
 import createPassword from "@/server_functions/pwd/createPassword";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+
 
 export default function ManageAccount() {
     const [mng, setMng] = useState(false);
@@ -172,7 +178,15 @@ export default function ManageAccount() {
                                     <AccordionTrigger className="text-primary">Delete your account</AccordionTrigger>
                                     <AccordionContent className="grid">
                                         Permanently delete your account, this action cannot be undone.
-                                        <Button onClick={handleDeleteAccount} variant="outline" className="mt-2 w-fit hover:text-red-400 border-red-400 text-red-400">{loadingd ? <Loader className="h-4 w-4 animate-spin" /> : 'Delete'}</Button>
+                                        <Popover>
+                                            <PopoverTrigger className="text-left">
+                                                <Button variant="outline" className="mt-2 gap-2 w-fit hover:text-red-400 border-red-400 text-red-400">Delete <Trash className="h-4 w-4" /></Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent>
+                                                <p className="text-sm text-muted-foreground mb-2">Are you sure you want to permanently delete your account? <br /> This action cannot be undone.</p>
+                                                <Button size="sm" onClick={handleDeleteAccount} disabled={loading}>{loading ? <Loader className="h-4 w-4 animate-spin" /> : 'Delete'}</Button>
+                                            </PopoverContent>
+                                        </Popover>
                                     </AccordionContent>
                                 </AccordionItem>
 
