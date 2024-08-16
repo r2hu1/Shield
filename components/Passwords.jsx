@@ -26,6 +26,11 @@ import { GiSwordClash } from "react-icons/gi";
 import { FaXTwitter } from "react-icons/fa6";
 import deletePassword from "@/server_functions/pwd/deletePassword";
 import { Skeleton } from "./ui/skeleton";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function Passwords() {
     const [data, setData] = useState([]);
@@ -128,7 +133,7 @@ export default function Passwords() {
                             <div className="flex items-center justify-between border border-border p-3 rounded-md">
                                 <div className="flex items-center">
                                     <div className="w-10 items-center flex justify-center mr-3">
-                                        {icons[item.name.toLowerCase().split(" ")[0]] || icons["account"]}
+                                        {icons[item.name.toLowerCase().split(" ")[0]] || icons[item.name.toLowerCase().split(" ")[1]] || icons["account"]}
                                     </div>
                                     <div>
                                         <h1 className="text-base">{item.name}</h1>
@@ -164,7 +169,17 @@ export default function Passwords() {
                                                         <div className="flex items-center gap-2 mt-2">
                                                             <Button onClick={() => { navigator.clipboard.writeText(JSON.stringify({ "name": item.name, "email": decrypt(item.email), "password": decrypt(item.password) })); toast.success(`Copied ${item.name} to clipboard`) }}>Copy All</Button>
                                                             <Button size="icon" onClick={() => navigator.share({ "title": `${item.name} Account`, "text": `Name: ${item.name}\nEmail: ${decrypt(item.email)}\nPassword: ${decrypt(item.password)}` })} variant="outline" className="text-primary border-primary"><Share2 className="h-4 w-4" /></Button>
-                                                            <Button onClick={() => { handleDelete(item._id) }} size="icon" variant="outline" className="text-red-400 border-red-400 hover:text-red-400" disabled={loading2}>{loading2 ? <Loader className="h-4 w-4 animate-spin" /> : <Trash className="h-4 w-4" />}</Button>
+                                                            <Popover>
+                                                                <PopoverTrigger>
+                                                                    <Button size="icon" variant="outline" className="text-red-400 border-red-400 hover:text-red-400"><Trash className="h-4 w-4" /></Button>
+                                                                </PopoverTrigger>
+                                                                <PopoverContent>
+                                                                    <p className="text-sm text-muted-foreground mb-3">
+                                                                        Are you sure you want to delete {item.name}? this action cannot be undone.
+                                                                    </p>
+                                                                    <Button onClick={() => { handleDelete(item._id) }} disabled={loading2} size="sm" variant="destructive">{loading2 ? <Loader className="h-4 w-4 animate-spin" /> : "Delete"}</Button>
+                                                                </PopoverContent>
+                                                            </Popover>
                                                         </div>
                                                     </div>
                                                 </AlertDialogDescription>
