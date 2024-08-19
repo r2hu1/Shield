@@ -192,7 +192,7 @@ export default function Passwords() {
                                     </div>
                                 </div>
                                 <div className="p-2 flex items-center justify-between">
-                                    <p className="text-xs text-muted-foreground">Password strength - <span className={cn("text-primary", passStrength(decrypt(item.password)) < 80 ? "text-red-600" : "text-green-600")}>{passStrength(decrypt(item.password))}%</span></p>
+                                    <p className="text-xs text-muted-foreground">Password strength ~ <span className={cn("text-primary", passStrength(decrypt(item.password)) < 80 ? "text-red-600" : "text-green-600")}>{passStrength(decrypt(item.password))}%</span></p>
                                     <Popover>
                                         <PopoverTrigger>
                                             <AlertCircle className="h-3.5 w-3.5" />
