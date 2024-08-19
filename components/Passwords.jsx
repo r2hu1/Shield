@@ -197,7 +197,7 @@ export default function Passwords() {
                                         <PopoverTrigger>
                                             <AlertCircle className="h-3.5 w-3.5" />
                                         </PopoverTrigger>
-                                        <PopoverContent className="text-left w-fit mr-10">
+                                        <PopoverContent className="text-left w-fit sm:mr-0 mr-10">
                                             <p className="text-sm">The conclusion is depend on</p>
                                             <ul className="list-disc text-xs text-muted-foreground px-4 mt-2">
                                                 <li>password length {">"}= 8</li>
