@@ -4,7 +4,7 @@ import getPassword from "@/server_functions/pwd/getPassword";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { AlertCircle, AlertTriangle, Clipboard, Eye, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
+import { AlertCircle, AlertTriangle, Check, Clipboard, Eye, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
 import { FaCloudflare, FaDiscord, FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaReddit, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
@@ -193,21 +193,25 @@ export default function Passwords() {
                                 </div>
                                 <div className="p-2 flex items-center justify-between">
                                     <p className="text-xs text-muted-foreground">Password strength ~ <span className={cn("text-primary", passStrength(decrypt(item.password)) < 80 ? "text-red-600" : "text-green-600")}>{passStrength(decrypt(item.password))}%</span></p>
-                                    <Popover>
-                                        <PopoverTrigger>
-                                            <AlertCircle className="h-3.5 w-3.5" />
-                                        </PopoverTrigger>
-                                        <PopoverContent className="text-left w-fit sm:mr-0 mr-10">
-                                            <p className="text-sm">The conclusion is depend on</p>
-                                            <ul className="list-disc text-xs text-muted-foreground px-4 mt-2">
-                                                <li>password length {">"}= 8</li>
-                                                <li>number of uppercase letters</li>
-                                                <li>number of lowercase letters</li>
-                                                <li>number of special characters</li>
-                                                <li>number of numbers</li>
-                                            </ul>
-                                        </PopoverContent>
-                                    </Popover>
+                                    {passStrength(decrypt(item.password)) != 100 ?
+                                        <Popover>
+                                            <PopoverTrigger>
+                                                <AlertCircle className="h-3.5 w-3.5 text-red-500" />
+                                            </PopoverTrigger>
+                                            <PopoverContent className="text-left sm:mr-0 mr-10">
+                                                <p className="text-sm">A strong password must meet the following requirements:</p>
+                                                <ul className="text-xs mt-3 text-muted-foreground list-decimal px-4 gap-0.5 grid">
+                                                    {decrypt(item.password).length < 8 && <li>Password is too short</li>}
+                                                    {!/[a-z]/.test(decrypt(item.password)) && <li>Missing at least one lowercase letter</li>}
+                                                    {!/[A-Z]/.test(decrypt(item.password)) && <li>Missing at least one uppercase letter</li>}
+                                                    {!/[0-9]/.test(decrypt(item.password)) && <li>Missing at least one number</li>}
+                                                    {!/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(decrypt(item.password)) && <li>Missing at least one special character</li>}
+                                                </ul>
+                                            </PopoverContent>
+                                        </Popover>
+                                        :
+                                        <Check className="h-3.5 w-3.5 text-muted-foreground" />
+                                    }
                                 </div>
                             </div>
                         )
