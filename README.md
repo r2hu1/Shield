@@ -24,7 +24,7 @@ screenshots of the application.
 
 ### Dashboard after adding passwords
 
-![dash](/public/pwd.png)
+![dash](/public/d-pwd.png)
 
 ### Add new password
 
