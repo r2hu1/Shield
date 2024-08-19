@@ -205,7 +205,7 @@ export default function ManageAccount() {
                             <form onSubmit={handleAdd} method="post" className="grid gap-2 mt-4">
                                 <Label className="text-primary" htmlFor="name">Name</Label>
                                 <Input name="name" type="text" id="name" autoComplete="off" placeholder="Google Account" className="w-full" />
-                                <Label htmlFor="email" className="mt-1 text-primary">Email / Username</Label>
+                                <Label htmlFor="email" className="mt-1 text-primary">Email / Username / Number</Label>
                                 <Input name="email" type="text" id="email" autoComplete="off" placeholder="name@domain.com" className="w-full" />
                                 <Label htmlFor="password" className="mt-1 text-primary">Password</Label>
                                 <div className="flex items-center gap-3">

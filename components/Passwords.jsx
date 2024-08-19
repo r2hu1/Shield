@@ -4,7 +4,7 @@ import getPassword from "@/server_functions/pwd/getPassword";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { AlertTriangle, Clipboard, Eye, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
+import { AlertCircle, AlertTriangle, Clipboard, Eye, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
 import { FaCloudflare, FaDiscord, FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaReddit, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
@@ -31,6 +31,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 export default function Passwords() {
     const [data, setData] = useState([]);
@@ -110,11 +111,11 @@ export default function Passwords() {
         if (/[A-Z]/.test(str)) {
             strength += 20;
         }
-        if (/\d/.test(str)) {
-            strength += 20;
-        }
         if (/[\W_]/.test(str)) {
             strength += 15;
+        }
+        if (/[0-9]/.test(str)) {
+            strength += 20;
         }
         return Math.min(strength, 100);
     }
@@ -132,8 +133,8 @@ export default function Passwords() {
                 <div className="grid gap-3 md:grid-cols-2">
                     {!loading ? data && data.map((item, i) => {
                         return (
-                            <div key={i}>
-                                <div className="flex items-center justify-between border border-border p-3 rounded-md">
+                            <div key={i} className="border border-border rounded-md">
+                                <div className="p-3 flex items-center border-b justify-between">
                                     <div className="flex items-center">
                                         <div className="w-10 items-center flex justify-center mr-3">
                                             {icons[item.name.toLowerCase().split(" ")[0]] || icons[item.name.toLowerCase().split(" ")[1]] || icons["account"]}
@@ -141,7 +142,6 @@ export default function Passwords() {
                                         <div>
                                             <h1 className="text-base">{item.name}</h1>
                                             <p className="text-xs text-muted-foreground">{decrypt(item.email)}</p>
-                                            {/* <span className="text-sm">Strength {passStrength(decrypt(item.password))}%</span> */}
                                         </div>
                                     </div>
                                     <div>
@@ -190,6 +190,24 @@ export default function Passwords() {
                                             </AlertDialogContent>
                                         </AlertDialog>
                                     </div>
+                                </div>
+                                <div className="p-2 flex items-center justify-between">
+                                    <p className="text-xs text-muted-foreground">Password strength - <span className={cn("text-primary", passStrength(decrypt(item.password)) < 80 ? "text-red-600" : "text-green-600")}>{passStrength(decrypt(item.password))}%</span></p>
+                                    <Popover>
+                                        <PopoverTrigger>
+                                            <AlertCircle className="h-3.5 w-3.5" />
+                                        </PopoverTrigger>
+                                        <PopoverContent className="text-left w-fit mr-10">
+                                            <p className="text-sm">The conclusion is depend on</p>
+                                            <ul className="list-disc text-xs text-muted-foreground px-4 mt-2">
+                                                <li>password length {">"}= 8</li>
+                                                <li>number of uppercase letters</li>
+                                                <li>number of lowercase letters</li>
+                                                <li>number of special characters</li>
+                                                <li>number of numbers</li>
+                                            </ul>
+                                        </PopoverContent>
+                                    </Popover>
                                 </div>
                             </div>
                         )
