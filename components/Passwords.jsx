@@ -32,6 +32,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { Progress } from "@/components/ui/progress";
 
 export default function Passwords() {
     const [data, setData] = useState([]);
@@ -118,13 +119,27 @@ export default function Passwords() {
             strength += 20;
         }
         return Math.min(strength, 100);
-    }
+    };
+
+    const sum = data.length && data.map((i) => passStrength(decrypt(i.password))).reduce((a, b) => a + b / data.length, 0);
+
 
     useEffect(() => {
         getData();
     }, []);
     return (
         <div className="min-h-[450px]">
+            {!loading && data.length > 0 &&
+                <div className="border border-border rounded-md -mt-5 mb-8">
+                    <div className="p-3">
+                        <h1 className="text-base font-medium">Overall Password Strength</h1>
+                        <p className="text-sm mt-0.5 text-muted-foreground">This is an overall password strength for all your saved passwords</p>
+                        <div className="flex items-center mt-2 gap-3">
+                            <Progress value={sum} className={Math.floor(sum) < 60 ? "bg-red-500" : "bg-primary"} />
+                            <span className="text-sm font-medium">{Math.floor(sum)}%</span>
+                        </div>
+                    </div>
+                </div>}
             <div className="grid gap-3">
                 <div className="mb-2">
                     <h1 className="text-lg font-medium flex items-center justify-between">Saved Passwords <Button onClick={() => window.location.reload()} size="icon" variant="outline" className="h-7 w-7 p-0"><RotateCw className="h-3.5 w-3.5" /></Button></h1>
