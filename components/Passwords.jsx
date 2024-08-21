@@ -4,7 +4,7 @@ import getPassword from "@/server_functions/pwd/getPassword";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { AlertCircle, AlertTriangle, Check, Clipboard, Eye, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
+import { AlertCircle, AlertTriangle, Check, CheckCircle, Clipboard, Eye, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
 import { FaCloudflare, FaDiscord, FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaReddit, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
@@ -133,16 +133,20 @@ export default function Passwords() {
                 <div className="border border-border rounded-md -mt-5 mb-8">
                     <div className="p-3">
                         <h1 className="text-base font-medium">Overall Password Strength</h1>
-                        <p className="text-sm mt-0.5 text-muted-foreground">This is an overall password strength for all your saved passwords</p>
+                        <p className="text-sm mt-0.5 text-muted-foreground">This is an overall password strength for all your saved passwords.</p>
                         <div className="flex items-center mt-2 gap-3">
-                            <Progress value={sum} className={Math.floor(sum) < 60 ? "bg-red-500" : "bg-primary"} />
+                            <Progress value={sum} />
                             <span className="text-sm font-medium">{Math.floor(sum)}%</span>
                         </div>
                     </div>
-                </div>}
+                </div>
+            }
+            {loading && (
+                <Skeleton className="w-full h-[110px] mb-8 -mt-4"/>
+            )}
             <div className="grid gap-3">
                 <div className="mb-2">
-                    <h1 className="text-lg font-medium flex items-center justify-between">Saved Passwords <Button onClick={() => window.location.reload()} size="icon" variant="outline" className="h-7 w-7 p-0"><RotateCw className="h-3.5 w-3.5" /></Button></h1>
+                    <h1 className="text-lg font-medium flex items-center justify-between">Saved Passwords <Button onClick={() => window.location.reload()} size="icon" variant="ghost" className="h-6 w-6 p-0"><RotateCw className="h-3 w-3" /></Button></h1>
                     <p className="text-sm mt-1 text-muted-foreground max-w-md">your saved passwords is encrypted and it can be decrypt only by you.</p>
                 </div>
                 <div className="grid gap-3 md:grid-cols-2">
@@ -186,10 +190,10 @@ export default function Passwords() {
                                                             </div>
                                                             <div className="flex items-center gap-2 mt-2">
                                                                 <Button onClick={() => { navigator.clipboard.writeText(JSON.stringify({ "name": item.name, "email": decrypt(item.email), "password": decrypt(item.password) })); toast.success(`Copied ${item.name} to clipboard`) }}>Copy All</Button>
-                                                                <Button size="icon" onClick={() => navigator.share({ "title": `${item.name} Account`, "text": `Name: ${item.name}\nEmail: ${decrypt(item.email)}\nPassword: ${decrypt(item.password)}` })} variant="outline" className="text-primary border-primary"><Share2 className="h-4 w-4" /></Button>
+                                                                {/* <Button size="icon" onClick={() => navigator.share({ "title": `${item.name} Account`, "text": `Name: ${item.name}\nEmail: ${decrypt(item.email)}\nPassword: ${decrypt(item.password)}` })} variant="outline" className="text-primary border-primary"><Share2 className="h-4 w-4" /></Button> */}
                                                                 <Popover>
                                                                     <PopoverTrigger>
-                                                                        <Button size="icon" variant="outline" className="text-red-400 border-red-400 hover:text-red-400"><Trash className="h-4 w-4" /></Button>
+                                                                        <Button size="icon" variant="outline"><Trash className="h-4 w-4" /></Button>
                                                                     </PopoverTrigger>
                                                                     <PopoverContent>
                                                                         <p className="text-sm text-muted-foreground mb-3">
@@ -207,11 +211,11 @@ export default function Passwords() {
                                     </div>
                                 </div>
                                 <div className="p-2 flex items-center justify-between">
-                                    <p className="text-xs text-muted-foreground">Password strength ~ <span className={cn("text-primary", passStrength(decrypt(item.password)) < 80 ? "text-red-600" : "text-green-600")}>{passStrength(decrypt(item.password))}%</span></p>
+                                    <p className="text-xs text-muted-foreground">Password strength ~ <span className={passStrength(decrypt(item.password)) > 80 ? "text-muted-foreground" : "text-primary"}>{passStrength(decrypt(item.password))}%</span></p>
                                     {passStrength(decrypt(item.password)) != 100 ?
                                         <Popover>
                                             <PopoverTrigger>
-                                                <AlertCircle className="h-3.5 w-3.5 text-red-500" />
+                                                <AlertCircle className="h-3.5 w-3.5" />
                                             </PopoverTrigger>
                                             <PopoverContent className="text-left sm:mr-0 mr-10">
                                                 <p className="text-sm">A strong password must meet the following requirements:</p>
@@ -225,7 +229,7 @@ export default function Passwords() {
                                             </PopoverContent>
                                         </Popover>
                                         :
-                                        <Check className="h-3.5 w-3.5 text-muted-foreground" />
+                                        <CheckCircle className="h-3.5 w-3.5 text-muted-foreground" />
                                     }
                                 </div>
                             </div>
