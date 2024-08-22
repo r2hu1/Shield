@@ -190,12 +190,12 @@ export default function Passwords() {
                                                             <Label htmlFor="email" className="text-primary -mb-1">Email</Label>
                                                             <div className="flex items-center gap-2">
                                                                 <Input type="text" id="email" value={decrypt(item.email)} readOnly className="w-full text-primary border-border" />
-                                                                <Button className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.email)); toast.success(`Copied ${item.name} email to clipboard`) }}><ClipboardType className="h-4 w-4" /></Button>
+                                                                <Button variant="secondary" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.email)); toast.success(`Copied ${item.name} email to clipboard`) }}><ClipboardType className="h-4 w-4" /></Button>
                                                             </div>
                                                             <Label htmlFor="password" className="text-primary -mb-1">Password <span className="text-xs text-muted-foreground">encrypted (click copy to decrypt & copy)</span></Label>
                                                             <div className="flex items-center gap-2">
                                                                 <Input type="password" id="password" value={item.password} readOnly className="w-full text-primary border-border" />
-                                                                <Button className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.password)); toast.success(`Copied ${item.name} password to clipboard`) }}><ClipboardType className="h-4 w-4" /></Button>
+                                                                <Button variant="secondary" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.password)); toast.success(`Copied ${item.name} password to clipboard`) }}><ClipboardType className="h-4 w-4" /></Button>
                                                             </div>
                                                             <div className="flex items-center gap-2 mt-2">
                                                                 <Button onClick={() => { navigator.clipboard.writeText(JSON.stringify({ "name": item.name, "email": decrypt(item.email), "password": decrypt(item.password) })); toast.success(`Copied ${item.name} to clipboard`) }}>Copy All</Button>
