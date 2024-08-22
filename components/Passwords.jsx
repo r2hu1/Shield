@@ -193,7 +193,7 @@ export default function Passwords() {
                                                             </div>
                                                             <Label htmlFor="password" className="text-primary -mb-1">Password <span className="text-xs text-muted-foreground">encrypted (click copy to decrypt & copy)</span></Label>
                                                             <div className="flex items-center gap-2">
-                                                                <Input type="text" id="password" value={item.password} readOnly className="w-full text-primary border-border" />
+                                                                <Input type="password" id="password" value={item.password} readOnly className="w-full text-primary border-border" />
                                                                 <Button className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.password)); toast.success(`Copied ${item.name} password to clipboard`) }}><Clipboard className="h-4 w-4" /></Button>
                                                             </div>
                                                             <div className="flex items-center gap-2 mt-2">
