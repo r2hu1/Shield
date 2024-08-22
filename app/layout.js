@@ -59,7 +59,8 @@ export default function RootLayout({ children }) {
               zIndex={1600}
               showAtBottom={false}
             />
-            {children}
+            <div vaul-drawer-wrapper="" className="bg-background">{children}</div>
+            {/* {children} */}
           </ThemeProvider>
           <Toaster position="top-center" />
           <Preloader />

@@ -4,20 +4,20 @@ import getPassword from "@/server_functions/pwd/getPassword";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { AlertCircle, AlertTriangle, Check, CheckCircle, Clipboard, Eye, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
+import { AlertCircle, AlertTriangle, Check, CheckCircle, Clipboard, ClipboardType, Eye, Globe, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
 import { FaCloudflare, FaDiscord, FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaReddit, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+    Credenza,
+    CredenzaBody,
+    CredenzaClose,
+    CredenzaContent,
+    CredenzaDescription,
+    CredenzaFooter,
+    CredenzaHeader,
+    CredenzaTitle,
+    CredenzaTrigger,
+} from "@/components/ui/credenza";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { toast } from "sonner";
@@ -60,6 +60,7 @@ export default function Passwords() {
         "reddit": <FaReddit className="h-4 w-4" />,
         "discord": <FaDiscord className="h-4 w-4" />,
         "account": <FaRegUser className="h-4 w-4" />,
+        "domain": <Globe className="h-4 w-4" />,
     };
 
     const getData = async () => {
@@ -172,16 +173,16 @@ export default function Passwords() {
                                         </div>
                                     </div>
                                     <div>
-                                        <AlertDialog>
-                                            <AlertDialogTrigger>
+                                        <Credenza>
+                                            <CredenzaTrigger asChild>
                                                 <Button className="min-w-10" size="icon" variant="outline">
                                                     <Eye className="h-4 w-4" />
                                                 </Button>
-                                            </AlertDialogTrigger>
-                                            <AlertDialogContent>
-                                                <AlertDialogHeader>
-                                                    <AlertDialogTitle className="text-left relative">Viewing {item.name} Account <AlertDialogCancel className="bg-none mt-0 mb-0 h-fit w-fit p-0 border-none hover:bg-transparent focus:bg-none -right-3 -top-3 absolute"><X className="h-4 w-4" /></AlertDialogCancel></AlertDialogTitle>
-                                                    <AlertDialogDescription className="text-left">
+                                            </CredenzaTrigger>
+                                            <CredenzaContent>
+                                                <CredenzaHeader>
+                                                    <CredenzaTitle className="text-left">Viewing {item.name} Account</CredenzaTitle>
+                                                    <CredenzaDescription className="text-left">
                                                         <p className="text-sm text-muted-foreground">Copy, share or delete your {item.name} account.</p>
                                                         <div className="mt-5 grid gap-3">
                                                             <Label htmlFor="name" className="text-primary -mb-1">Name</Label>
@@ -189,12 +190,12 @@ export default function Passwords() {
                                                             <Label htmlFor="email" className="text-primary -mb-1">Email</Label>
                                                             <div className="flex items-center gap-2">
                                                                 <Input type="text" id="email" value={decrypt(item.email)} readOnly className="w-full text-primary border-border" />
-                                                                <Button className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.email)); toast.success(`Copied ${item.name} email to clipboard`) }}><Clipboard className="h-4 w-4" /></Button>
+                                                                <Button className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.email)); toast.success(`Copied ${item.name} email to clipboard`) }}><ClipboardType className="h-4 w-4" /></Button>
                                                             </div>
                                                             <Label htmlFor="password" className="text-primary -mb-1">Password <span className="text-xs text-muted-foreground">encrypted (click copy to decrypt & copy)</span></Label>
                                                             <div className="flex items-center gap-2">
                                                                 <Input type="password" id="password" value={item.password} readOnly className="w-full text-primary border-border" />
-                                                                <Button className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.password)); toast.success(`Copied ${item.name} password to clipboard`) }}><Clipboard className="h-4 w-4" /></Button>
+                                                                <Button className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.password)); toast.success(`Copied ${item.name} password to clipboard`) }}><ClipboardType className="h-4 w-4" /></Button>
                                                             </div>
                                                             <div className="flex items-center gap-2 mt-2">
                                                                 <Button onClick={() => { navigator.clipboard.writeText(JSON.stringify({ "name": item.name, "email": decrypt(item.email), "password": decrypt(item.password) })); toast.success(`Copied ${item.name} to clipboard`) }}>Copy All</Button>
@@ -212,10 +213,10 @@ export default function Passwords() {
                                                                 </Popover>
                                                             </div>
                                                         </div>
-                                                    </AlertDialogDescription>
-                                                </AlertDialogHeader>
-                                            </AlertDialogContent>
-                                        </AlertDialog>
+                                                    </CredenzaDescription>
+                                                </CredenzaHeader>
+                                            </CredenzaContent>
+                                        </Credenza>
                                     </div>
                                 </div>
                                 <div className="p-2 flex items-center justify-between">
