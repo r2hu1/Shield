@@ -21,13 +21,13 @@ export const metadata = {
     icon: [
       {
         media: '(prefers-color-scheme: dark)',
-        url: '/logo.png',
-        href: '/logo.png',
+        url: '/logo-dark.png',
+        href: '/logo-dark.png',
       },
       {
         media: '(prefers-color-scheme: light)',
-        url: '/logo-light.png',
-        href: '/logo-light.png',
+        url: '/logo.png',
+        href: '/logo.png',
       },
     ],
   }
