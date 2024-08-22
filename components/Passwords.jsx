@@ -144,9 +144,9 @@ export default function Passwords() {
             }
             {loading && (
                 <div className="mb-8 -mt-4 grid gap-2 border border-border rounded-md p-3">
-                    <Skeleton className="w-56 h-4" />
-                    <Skeleton className="w-96 h-3 mt-1" />
-                    <Skeleton className="w-24 h-3 md:hidden" />
+                    <Skeleton className="md:w-56 w-full h-4" />
+                    <Skeleton className="md:w-96 w-2/3 h-3 mt-1" />
+                    <Skeleton className="md:w-24 w-1/3 h-3 md:hidden" />
                     <div className="mt-1 flex items-center gap-3">
                         <Skeleton className="w-full h-5 rounded-full" />
                         <Skeleton className="w-5 h-5" />
@@ -159,7 +159,7 @@ export default function Passwords() {
                     <p className="text-sm mt-1 text-muted-foreground max-w-md">your saved passwords is encrypted and it can be decrypt only by you.</p>
                 </div>
                 <div className="grid gap-3 md:grid-cols-2">
-                    {!loading ? data && data.map((item, i) => {
+                    {loading ? data && data.map((item, i) => {
                         return (
                             <div key={i} className="border border-border rounded-md">
                                 <div className="p-3 flex items-center border-b justify-between">
@@ -250,94 +250,14 @@ export default function Passwords() {
                                     <div className="flex gap-3 items-center">
                                         <Skeleton className="h-10 w-10" />
                                         <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md w-52" />
-                                            <Skeleton className="h-3.5 rounded-md w-36" />
+                                            <Skeleton className="h-3.5 rounded-md md:w-52 w-32" />
+                                            <Skeleton className="h-3.5 rounded-md md:w-36 w-20" />
                                         </div>
                                     </div>
                                     <Skeleton className="h-10 rounded-md w-10" />
                                 </div>
                                 <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md w-36" />
-                                    <Skeleton className="h-3.5 rounded-md w-4" />
-                                </div>
-                            </div>
-                            <div className="border border-border rounded-md">
-                                <div className="p-3 flex w-full items-center justify-between">
-                                    <div className="flex gap-3 items-center">
-                                        <Skeleton className="h-10 w-10" />
-                                        <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md w-52" />
-                                            <Skeleton className="h-3.5 rounded-md w-36" />
-                                        </div>
-                                    </div>
-                                    <Skeleton className="h-10 rounded-md w-10" />
-                                </div>
-                                <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md w-36" />
-                                    <Skeleton className="h-3.5 rounded-md w-4" />
-                                </div>
-                            </div>
-                            <div className="border border-border rounded-md">
-                                <div className="p-3 flex w-full items-center justify-between">
-                                    <div className="flex gap-3 items-center">
-                                        <Skeleton className="h-10 w-10" />
-                                        <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md w-52" />
-                                            <Skeleton className="h-3.5 rounded-md w-36" />
-                                        </div>
-                                    </div>
-                                    <Skeleton className="h-10 rounded-md w-10" />
-                                </div>
-                                <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md w-36" />
-                                    <Skeleton className="h-3.5 rounded-md w-4" />
-                                </div>
-                            </div>
-                            <div className="border border-border rounded-md">
-                                <div className="p-3 flex w-full items-center justify-between">
-                                    <div className="flex gap-3 items-center">
-                                        <Skeleton className="h-10 w-10" />
-                                        <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md w-52" />
-                                            <Skeleton className="h-3.5 rounded-md w-36" />
-                                        </div>
-                                    </div>
-                                    <Skeleton className="h-10 rounded-md w-10" />
-                                </div>
-                                <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md w-36" />
-                                    <Skeleton className="h-3.5 rounded-md w-4" />
-                                </div>
-                            </div>
-                            <div className="border border-border rounded-md">
-                                <div className="p-3 flex w-full items-center justify-between">
-                                    <div className="flex gap-3 items-center">
-                                        <Skeleton className="h-10 w-10" />
-                                        <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md w-52" />
-                                            <Skeleton className="h-3.5 rounded-md w-36" />
-                                        </div>
-                                    </div>
-                                    <Skeleton className="h-10 rounded-md w-10" />
-                                </div>
-                                <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md w-36" />
-                                    <Skeleton className="h-3.5 rounded-md w-4" />
-                                </div>
-                            </div>
-                            <div className="border border-border rounded-md">
-                                <div className="p-3 flex w-full items-center justify-between">
-                                    <div className="flex gap-3 items-center">
-                                        <Skeleton className="h-10 w-10" />
-                                        <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md w-52" />
-                                            <Skeleton className="h-3.5 rounded-md w-36" />
-                                        </div>
-                                    </div>
-                                    <Skeleton className="h-10 rounded-md w-10" />
-                                </div>
-                                <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md w-36" />
+                                    <Skeleton className="h-3.5 rounded-md md:w-36 w-1/2" />
                                     <Skeleton className="h-3.5 rounded-md w-4" />
                                 </div>
                             </div>
