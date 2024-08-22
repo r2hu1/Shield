@@ -11,6 +11,13 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+    Credenza,
+    CredenzaContent,
+    CredenzaDescription,
+    CredenzaHeader,
+    CredenzaTitle,
+} from "@/components/ui/credenza";
+import {
     AlertDialog,
     AlertDialogContent,
     AlertDialogDescription,
@@ -196,11 +203,11 @@ export default function ManageAccount() {
                 </AlertDialogContent>
             </AlertDialog>
 
-            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle className="text-left relative">Add new password <X onClick={() => setIsOpen(false)} className="h-4 w-4 absolute -top-3 -right-3 cursor-pointer hover:opacity-85" /></AlertDialogTitle>
-                        <AlertDialogDescription className="text-left">
+            <Credenza open={isOpen} onOpenChange={setIsOpen}>
+                <CredenzaContent className="focus:outline-none">
+                    <CredenzaHeader>
+                        <CredenzaTitle className="text-left">Add new password</CredenzaTitle>
+                        <CredenzaDescription className="text-left">
                             <p className="text-sm text-muted-foreground -mt-1">The email and password will be encrypted with higest encryption strength possible and cannot be decrypted by anyone except you.</p>
                             <form onSubmit={handleAdd} method="post" className="grid gap-2 mt-4">
                                 <Label className="text-primary" htmlFor="name">Name</Label>
@@ -215,10 +222,10 @@ export default function ManageAccount() {
                                 <p className="text-xs max-w-md text-muted-foreground">No one can see your email & password even the coder itself, It will be encrypted with highest encryption strength possible!</p>
                                 <Button type="submit" className="mt-2" disabled={loading3}>{loading3 ? <Loader className="w-4 h-4 animate-spin" /> : "Add Password"}</Button>
                             </form>
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                </AlertDialogContent>
-            </AlertDialog>
+                        </CredenzaDescription>
+                    </CredenzaHeader>
+                </CredenzaContent>
+            </Credenza>
         </>
     )
 };
