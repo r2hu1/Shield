@@ -130,7 +130,7 @@ export default function Passwords() {
     }, []);
     return (
         <div className="min-h-[450px]">
-            {!loading && data.length > 0 &&
+            {/*{!loading && data.length > 0 &&
                 <div className="border border-border rounded-md -mt-5 mb-8">
                     <div className="p-3">
                         <h1 className="text-base font-medium">Overall Password Strength</h1>
@@ -152,7 +152,7 @@ export default function Passwords() {
                         <Skeleton className="w-5 h-5" />
                     </div>
                 </div>
-            )}
+            )}*/}
             <div className="grid gap-3">
                 <div className="mb-2">
                     <h1 className="text-lg font-medium flex items-center justify-between">Saved Passwords <Button onClick={() => window.location.reload()} size="icon" variant="ghost" className="h-6 w-6 p-0"><RotateCw className="h-3 w-3" /></Button></h1>
