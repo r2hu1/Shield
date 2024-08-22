@@ -142,7 +142,15 @@ export default function Passwords() {
                 </div>
             }
             {loading && (
-                <Skeleton className="w-full h-[110px] mb-8 -mt-4"/>
+                <div className="mb-8 -mt-4 grid gap-2 border border-border rounded-md p-3">
+                    <Skeleton className="w-56 h-4" />
+                    <Skeleton className="w-96 h-3 mt-1" />
+                    <Skeleton className="w-24 h-3 md:hidden" />
+                    <div className="mt-1 flex items-center gap-3">
+                        <Skeleton className="w-full h-5 rounded-full" />
+                        <Skeleton className="w-5 h-5" />
+                    </div>
+                </div>
             )}
             <div className="grid gap-3">
                 <div className="mb-2">
@@ -211,7 +219,7 @@ export default function Passwords() {
                                     </div>
                                 </div>
                                 <div className="p-2 flex items-center justify-between">
-                                    <p className="text-xs text-muted-foreground">Password strength ~ <span className={passStrength(decrypt(item.password)) > 80 ? "text-muted-foreground" : "text-primary"}>{passStrength(decrypt(item.password))}%</span></p>
+                                    <p className="text-xs text-muted-foreground">Password strength ~ <span className={passStrength(decrypt(item.password)) > 80 ? "text-muted-foreground" : "dark:text-white text-black"}>{passStrength(decrypt(item.password))}%</span></p>
                                     {passStrength(decrypt(item.password)) != 100 ?
                                         <Popover>
                                             <PopoverTrigger>
@@ -236,14 +244,22 @@ export default function Passwords() {
                         )
                     }) : (
                         <>
-                            <Skeleton className="h-16 rounded-md w-full" />
-                            <Skeleton className="h-16 rounded-md w-full" />
-                            <Skeleton className="h-16 rounded-md w-full" />
-                            <Skeleton className="h-16 rounded-md w-full" />
-                            <Skeleton className="h-16 rounded-md w-full" />
-                            <Skeleton className="h-16 rounded-md w-full" />
-                            <Skeleton className="h-16 rounded-md w-full" />
-                            <Skeleton className="h-16 rounded-md w-full" />
+                            <div className="border border-border rounded-md">
+                                <div className="p-3 flex w-full items-center justify-between">
+                                    <div className="flex gap-3 items-center">
+                                        <Skeleton className="h-10 w-10" />
+                                        <div className="grid gap-2">
+                                            <Skeleton className="h-3.5 rounded-md w-52" />
+                                            <Skeleton className="h-3.5 rounded-md w-36" />
+                                        </div>
+                                    </div>
+                                    <Skeleton className="h-10 rounded-md w-10" />
+                                </div>
+                                <div className="p-2 border-t flex items-center justify-between">
+                                    <Skeleton className="h-3.5 rounded-md w-36" />
+                                    <Skeleton className="h-3.5 rounded-md w-4" />
+                                </div>
+                            </div>
                         </>
                     )}
                 </div>
