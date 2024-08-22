@@ -2,7 +2,6 @@
 
 import connectDB from "@/lib/mongodb";
 import User from "@/models/user";
-import base64 from "base-64";
 
 export default async function getStatus({ currentUserEmail }) {
     try {

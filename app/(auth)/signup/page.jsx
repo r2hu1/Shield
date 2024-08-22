@@ -6,7 +6,6 @@ import { Check, Eye, EyeOff, Loader, ShieldCheck, ShieldHalf, X } from "lucide-r
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
-import base64 from "base-64"
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import bcrypt from "bcryptjs";
