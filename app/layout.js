@@ -18,18 +18,7 @@ export const metadata = {
   },
   description: "Open source secure password manager.",
   icons: {
-    icon: [
-      {
-        media: '(prefers-color-scheme: dark)',
-        url: '/logo-dark.png',
-        href: '/logo-dark.png',
-      },
-      {
-        media: '(prefers-color-scheme: light)',
-        url: '/logo.png',
-        href: '/logo.png',
-      },
-    ],
+    icon: ["/logo.png"],
   }
 };
 
