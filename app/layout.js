@@ -19,7 +19,8 @@ export const metadata = {
   description: "Open source secure password manager.",
   icons: {
     icon: ["/logo.png"],
-  }
+  },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({ children }) {
