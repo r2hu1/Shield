@@ -12,7 +12,6 @@ import { signIn } from "next-auth/react";
 import getStatus from "@/server_functions/user/userStatus";
 
 export default function Page({params}) {
-    console.log(params)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [logging, setLogging] = useState("");
