@@ -13,6 +13,7 @@ import Footer from "@/components/Footer";
 export default function Page() {
     const router = useRouter();
     const [isVerifyed, setIsVerifyed] = useState(true);
+    const [inPwa, setInPwa] = useState(false);
     const { data: session, status } = useSession();
 
     const checkVerification = async () => {
@@ -36,11 +37,22 @@ export default function Page() {
         }
         else {
             router.push("/login");
+        };
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            setInPwa(true);
         }
     }, [status, session]);
 
     return (
         <main>
+            {!inPwa && (
+                <div className="flex items-center justify-between gap-3 bg-secondary/40 p-3">
+                    <p className="text-sm text-foreground/80">Download the shield app for better experience!</p>
+                    <Button size="sm" className="text-xs p-0 h-8 px-3" asChild>
+                        <Link href="/shield.apk">Download</Link>
+                    </Button>
+                </div>
+            )}
             <Header />
             <section className="px-6 py-3 md:px-20 lg:px-32 mt-3">
                 {!isVerifyed && (
