@@ -77,7 +77,7 @@ NEXTAUTH_URL=''
 GMAIL_USER='' // your email
 GMAIL_PASS='' // app password
 
-ENCRYPTION_KEY=''
+NEXT_PUBLIC_ENCRYPTION_KEY=''
 ```
 
 - Start the application
