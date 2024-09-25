@@ -155,8 +155,8 @@ export default function Passwords() {
             )}*/}
             <div className="grid gap-3">
                 <div className="mb-2">
-                    <h1 className="text-lg font-medium flex items-center justify-between">Saved Passwords <Button onClick={() => window.location.reload()} size="icon" variant="ghost" className="h-6 w-6 p-0"><RotateCw className="h-3 w-3" /></Button></h1>
-                    <p className="text-sm mt-1 text-muted-foreground max-w-md">your saved passwords is encrypted and it can be decrypt only by you.</p>
+                    <h1 className="text-base font-medium">Saved Passwords</h1>
+                    <p className="text-xs text-muted-foreground max-w-md">your saved passwords is encrypted and it can be decrypt only by you.</p>
                 </div>
                 <div className="grid gap-3 md:grid-cols-2">
                     {!loading ? data && data.map((item, i) => {
@@ -175,8 +175,8 @@ export default function Passwords() {
                                     <div>
                                         <Credenza>
                                             <CredenzaTrigger asChild>
-                                                <Button className="min-w-10" size="icon" variant="outline">
-                                                    <Eye className="h-4 w-4" />
+                                                <Button className="w-9 p-0" size="sm" variant="outline">
+                                                    <Eye className="h-3.5 w-3.5" />
                                                 </Button>
                                             </CredenzaTrigger>
                                             <CredenzaContent>
