@@ -13,8 +13,8 @@ const inter = Poppins({
 
 export const metadata = {
   title: {
-    default: "Shield - Password Manager",
-    template: "%s | Shield - Password Manager",
+    default: "Shield",
+    template: "%s | Shield",
   },
   description: "Open source secure password manager.",
   icons: {
