@@ -162,11 +162,14 @@ export default function Passwords() {
                     {!loading ? data && data.map((item, i) => {
                         return (
                             <div key={i} className="border border-border rounded-md">
-                                <div className="p-3 flex items-center border-b justify-between">
+                                <div className="p-2 flex items-center border-b justify-between">
                                     <div className="flex items-center">
-                                        <div className="w-10 items-center flex justify-center mr-3">
+                                        {/* <div className="w-10 items-center flex justify-center mr-2">
                                             {icons[item.name.toLowerCase().split(" ")[0]] || icons[item.name.toLowerCase().split(" ")[1]] || icons["account"]}
-                                        </div>
+                                        </div> */}
+                                        <Button size="icon" variant="ghost" className="mr-1.5">
+                                            {icons[item.name.toLowerCase().split(" ")[0]] || icons[item.name.toLowerCase().split(" ")[1]] || icons["account"]}
+                                        </Button>
                                         <div>
                                             <h1 className="text-base">{item.name}</h1>
                                             <p className="text-xs text-muted-foreground">{decrypt(item.email)}</p>
@@ -224,7 +227,7 @@ export default function Passwords() {
                                     {passStrength(decrypt(item.password)) != 100 ?
                                         <Popover>
                                             <PopoverTrigger>
-                                                <AlertCircle className="h-3.5 w-3.5" />
+                                                <AlertCircle className="h-3 w-3" />
                                             </PopoverTrigger>
                                             <PopoverContent className="text-left sm:mr-0 mr-10">
                                                 <p className="text-sm">A strong password must meet the following requirements:</p>
@@ -238,7 +241,7 @@ export default function Passwords() {
                                             </PopoverContent>
                                         </Popover>
                                         :
-                                        <CheckCircle className="h-3.5 w-3.5 text-muted-foreground" />
+                                        <CheckCircle className="h-3 w-3 text-muted-foreground" />
                                     }
                                 </div>
                             </div>

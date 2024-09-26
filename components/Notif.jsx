@@ -13,10 +13,10 @@ export default function Notif() {
         }
     }, []);
     return !inPwa && (
-        <div className="flex items-center justify-between gap-3 bg-secondary/40 p-3">
-            <p className="text-sm text-foreground/80">Download the shield app for better experience!</p>
+        <div className="flex items-center justify-between gap-3 bg-secondary/50 px-3 py-3 md:px-20 lg:px-32">
+            <p className="text-xs text-foreground/80">Download the shield mobile app for better experience!</p>
             <Button size="sm" className="text-xs p-0 h-8 px-3" asChild>
-                <Link href="/shield.apk">Download</Link>
+                <Link href="https://github.com/r2hu1/Shield/raw/refs/heads/main/public/shield.apk">Download</Link>
             </Button>
         </div>
     )
