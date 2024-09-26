@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 export default function Preloader() {
     const [show, setShow] = useState(true);
     useEffect(() => {
+        document.body.style.overflow = "hidden";
         setTimeout(() => {
             setShow(false);
+            document.body.style.overflow = "auto";
         },2000);
     },[]);
     return show && (
