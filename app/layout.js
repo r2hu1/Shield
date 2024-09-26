@@ -5,6 +5,8 @@ import { Toaster } from 'sonner';
 import { AuthProvider } from "./Providers";
 import Preloader from "@/components/Preloader";
 import NextTopLoader from 'nextjs-toploader';
+import Header from "@/components/Header";
+import Notif from "@/components/Notif";
 
 const inter = Poppins({
   subsets: ["latin"],
@@ -49,8 +51,11 @@ export default function RootLayout({ children }) {
               zIndex={1600}
               showAtBottom={false}
             />
-            <div vaul-drawer-wrapper="" className="bg-background">{children}</div>
-            {/* {children} */}
+            <div vaul-drawer-wrapper="" className="bg-background">
+              <Notif />
+              <Header />
+              {children}
+            </div>
           </ThemeProvider>
           <Toaster position="top-center" />
           <Preloader />
