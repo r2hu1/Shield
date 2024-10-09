@@ -1,6 +1,6 @@
 ## Shield - Password Manager
 
-Open-source secure password manager with encryption, authentication and email verification.
+Open-source secure password manager with end to end encryption, authentication and email verification.
 
 ## Screenshots
 
