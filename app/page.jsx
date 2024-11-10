@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Passwords from "@/components/Passwords";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 
 export default function Page() {
     const router = useRouter();
@@ -40,6 +41,7 @@ export default function Page() {
 
     return (
         <main>
+            <Header/>
             <section className="px-6 py-3 md:px-20 lg:px-32 mt-3">
                 {!isVerifyed && (
                     <div className="p-3 mb-3 rounded border border-border flex items-center sm:justify-between gap-3">
