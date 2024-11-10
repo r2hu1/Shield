@@ -53,7 +53,7 @@ export default function RootLayout({ children }) {
             />
             <div vaul-drawer-wrapper="" className="bg-background">
               <Notif />
-              // <Header />
+                {/*<Header />*/}
               {children}
             </div>
           </ThemeProvider>
