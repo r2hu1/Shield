@@ -52,7 +52,7 @@ export default function RootLayout({ children }) {
               showAtBottom={false}
             />
             <div vaul-drawer-wrapper="" className="bg-background">
-              <Notif />
+                {/*<Notif />*/}
                 {/*<Header />*/}
               {children}
             </div>
