@@ -4,7 +4,7 @@ import getPassword from "@/server_functions/pwd/getPassword";
 import { useSession } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { AlertCircle, AlertTriangle, Check, CheckCircle, Clipboard, ClipboardType, Copy, Eye, Globe, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
+import { AlertCircle, AlertTriangle, ArrowRight, Check, CheckCircle, Clipboard, ClipboardType, Copy, Eye, Globe, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
 import { FaCloudflare, FaDiscord, FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaReddit, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
@@ -35,6 +35,8 @@ import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { TokenContext } from "@/hooks/use-context";
 import { AddPassword } from "./HeaderContent";
+import matchPassword from "@/server_functions/pwd/matchPassword";
+
 
 export default function Passwords() {
     const [data, setData] = useState([]);
@@ -43,6 +45,25 @@ export default function Passwords() {
     const user = useSession();
     const cntx = useContext(TokenContext);
 
+    const handleUnlock = async (e) => {
+        e.preventDefault();
+        if (!user) return toast.error("Please login!");
+        console.log(e.target.password.value);
+        if (!e.target.password.value) return toast.error("Please enter password!");
+        try {
+            const match = await matchPassword({ currentUserEmail: user.data.user.email, currentPassword: e.target.password.value });
+            if(JSON.parse(match).success) {
+                
+                return cntx.setLock(false);
+            }
+            else {
+                return toast.error(JSON.parse(match).error);
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
 
     const icons = {
         "github": <FaGithub className="h-4 w-4" />,
@@ -128,7 +149,6 @@ export default function Passwords() {
 
     const sum = data.length && data.map((i) => passStrength(decrypt(i.password))).reduce((a, b) => a + b / data.length, 0);
 
-
     useEffect(() => {
         getData();
     }, []);
@@ -164,7 +184,7 @@ export default function Passwords() {
                 </div>
             )}*/}
             <div className="grid gap-3">
-                <div className="flex items-center justify-between gap-5 mb-4">
+                <div className="flex items-center flex-wrap justify-between gap-2 mb-4">
                     <div>
                         <h1 className="text-base font-medium">Saved Passwords</h1>
                         <p className="text-xs text-muted-foreground max-w-md">End to end encryption enabled!</p>
@@ -196,41 +216,54 @@ export default function Passwords() {
                                                 </Button>
                                             </CredenzaTrigger>
                                             <CredenzaContent>
-                                                <CredenzaHeader>
-                                                    <CredenzaTitle className="text-left">Viewing {item.name} Account</CredenzaTitle>
-                                                    <CredenzaDescription className="text-left">
-                                                        <p className="text-sm text-muted-foreground">Copy, share or delete your {item.name} account.</p>
-                                                        <div className="mt-5 grid gap-3">
-                                                            <Label htmlFor="name" className="text-primary -mb-1">Name</Label>
-                                                            <Input type="text" id="name" value={item.name} readOnly className="w-full border-border" />
-                                                            <Label htmlFor="email" className="text-primary -mb-1">Email</Label>
-                                                            <div className="flex items-center gap-2">
-                                                                <Input type="text" id="email" value={decrypt(item.email)} readOnly className="w-full border-border" />
-                                                                <Button variant="outline" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.email)); toast.success(`Copied ${item.name} email to clipboard`) }}><Copy className="h-4 w-4" /></Button>
+                                                {cntx.lock ? (
+                                                    <CredenzaHeader>
+                                                        <CredenzaTitle className="text-center">Enter Password</CredenzaTitle>
+                                                        <CredenzaDescription>
+                                                            <p className="text-sm text-center text-muted-foreground -mt-1 mb-2">Enter login password to continue.</p>
+                                                            <form autoFocus onSubmit={handleUnlock} className="text-center flex gap-2 items-center">
+                                                                <Input name="password" type="password" placeholder="Enter your login password.." />
+                                                                <Button type="submit" size="icon" className="!min-w-10"><ArrowRight className="h-4 w-4" /></Button>
+                                                            </form>
+                                                        </CredenzaDescription>
+                                                    </CredenzaHeader>
+                                                ) : (
+                                                    <CredenzaHeader>
+                                                        <CredenzaTitle className="text-left">Viewing {item.name} Account</CredenzaTitle>
+                                                        <CredenzaDescription className="text-left">
+                                                            <p className="text-sm text-muted-foreground">Copy, share or delete your {item.name} account.</p>
+                                                            <div className="mt-5 grid gap-3">
+                                                                <Label htmlFor="name" className="text-primary -mb-1">Name</Label>
+                                                                <Input type="text" id="name" value={item.name} readOnly className="w-full border-border" />
+                                                                <Label htmlFor="email" className="text-primary -mb-1">Email</Label>
+                                                                <div className="flex items-center gap-2">
+                                                                    <Input type="text" id="email" value={decrypt(item.email)} readOnly className="w-full border-border" />
+                                                                    <Button variant="outline" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.email)); toast.success(`Copied ${item.name} email to clipboard`) }}><Copy className="h-4 w-4" /></Button>
+                                                                </div>
+                                                                <Label htmlFor="password" className="text-primary -mb-1">Password <span className="text-xs text-muted-foreground">encrypted (click copy to decrypt & copy)</span></Label>
+                                                                <div className="flex items-center gap-2">
+                                                                    <Input type="password" id="password" value={item.password} readOnly className="w-full border-border" />
+                                                                    <Button variant="outline" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.password)); toast.success(`Copied ${item.name} password to clipboard`) }}><Copy className="h-4 w-4" /></Button>
+                                                                </div>
+                                                                <div className="flex items-center gap-2 mt-2">
+                                                                    <Button onClick={() => { navigator.clipboard.writeText(JSON.stringify({ "name": item.name, "email": decrypt(item.email), "password": decrypt(item.password) })); toast.success(`Copied ${item.name} to clipboard`) }}>Copy All</Button>
+                                                                    {/* <Button size="icon" onClick={() => navigator.share({ "title": `${item.name} Account`, "text": `Name: ${item.name}\nEmail: ${decrypt(item.email)}\nPassword: ${decrypt(item.password)}` })} variant="outline" className="text-primary border-primary"><Share2 className="h-4 w-4" /></Button> */}
+                                                                    <Popover>
+                                                                        <PopoverTrigger>
+                                                                            <Button size="icon" variant="outline"><Trash className="h-4 w-4" /></Button>
+                                                                        </PopoverTrigger>
+                                                                        <PopoverContent>
+                                                                            <p className="text-sm text-muted-foreground mb-3">
+                                                                                Are you sure you want to delete <span className="text-primary underline">{item.name}?</span> <br /> This action cannot be undone.
+                                                                            </p>
+                                                                            <Button onClick={() => { handleDelete(item._id) }} disabled={loading2} size="sm" variant="destructive">{loading2 ? <Loader className="h-4 w-4 animate-spin" /> : "Delete"}</Button>
+                                                                        </PopoverContent>
+                                                                    </Popover>
+                                                                </div>
                                                             </div>
-                                                            <Label htmlFor="password" className="text-primary -mb-1">Password <span className="text-xs text-muted-foreground">encrypted (click copy to decrypt & copy)</span></Label>
-                                                            <div className="flex items-center gap-2">
-                                                                <Input type="password" id="password" value={item.password} readOnly className="w-full border-border" />
-                                                                <Button variant="outline" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.password)); toast.success(`Copied ${item.name} password to clipboard`) }}><Copy className="h-4 w-4" /></Button>
-                                                            </div>
-                                                            <div className="flex items-center gap-2 mt-2">
-                                                                <Button onClick={() => { navigator.clipboard.writeText(JSON.stringify({ "name": item.name, "email": decrypt(item.email), "password": decrypt(item.password) })); toast.success(`Copied ${item.name} to clipboard`) }}>Copy All</Button>
-                                                                {/* <Button size="icon" onClick={() => navigator.share({ "title": `${item.name} Account`, "text": `Name: ${item.name}\nEmail: ${decrypt(item.email)}\nPassword: ${decrypt(item.password)}` })} variant="outline" className="text-primary border-primary"><Share2 className="h-4 w-4" /></Button> */}
-                                                                <Popover>
-                                                                    <PopoverTrigger>
-                                                                        <Button size="icon" variant="outline"><Trash className="h-4 w-4" /></Button>
-                                                                    </PopoverTrigger>
-                                                                    <PopoverContent>
-                                                                        <p className="text-sm text-muted-foreground mb-3">
-                                                                            Are you sure you want to delete <span className="text-primary underline">{item.name}?</span> <br /> This action cannot be undone.
-                                                                        </p>
-                                                                        <Button onClick={() => { handleDelete(item._id) }} disabled={loading2} size="sm" variant="destructive">{loading2 ? <Loader className="h-4 w-4 animate-spin" /> : "Delete"}</Button>
-                                                                    </PopoverContent>
-                                                                </Popover>
-                                                            </div>
-                                                        </div>
-                                                    </CredenzaDescription>
-                                                </CredenzaHeader>
+                                                        </CredenzaDescription>
+                                                    </CredenzaHeader>
+                                                )}
                                             </CredenzaContent>
                                         </Credenza>
                                     </div>
@@ -242,9 +275,9 @@ export default function Passwords() {
                                             <PopoverTrigger>
                                                 <AlertCircle className="h-3 w-3" />
                                             </PopoverTrigger>
-                                            <PopoverContent className="text-left sm:mr-0 mr-10">
-                                                <p className="text-sm">A strong password must meet the following requirements:</p>
-                                                <ul className="text-xs mt-3 text-muted-foreground list-decimal px-4 gap-0.5 grid">
+                                            <PopoverContent className="text-left">
+                                                {/* <p className="text-sm">A strong password must meet the following requirements:</p> */}
+                                                <ul className="text-xs text-muted-foreground list-decimal px-4 gap-0.5 grid">
                                                     {decrypt(item.password).length < 8 && <li>Password is too short</li>}
                                                     {!/[a-z]/.test(decrypt(item.password)) && <li>Missing at least one lowercase letter</li>}
                                                     {!/[A-Z]/.test(decrypt(item.password)) && <li>Missing at least one uppercase letter</li>}
@@ -360,16 +393,18 @@ export default function Passwords() {
                         </>
                     )}
                 </div>
-                {!loading && data.length == 0 && (
-                    <div className="flex border-border border rounded-md items-center justify-center h-64">
-                        <div className="grid place-items-center text-center">
-                            <AlertTriangle className="h-6 w-6 mb-1" />
-                            <h1 className="text-sm">No Passwords Found</h1>
-                            <p className="text-xs text-muted-foreground">Add by clicking Add New on the setting button</p>
+                {
+                    !loading && data.length == 0 && (
+                        <div className="flex border-border border rounded-md items-center justify-center h-64">
+                            <div className="grid place-items-center text-center">
+                                <AlertTriangle className="h-6 w-6 mb-1" />
+                                <h1 className="text-sm">No Passwords Found</h1>
+                                <p className="text-xs text-muted-foreground">Add by clicking Add New on the setting button</p>
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
-        </div>
+                    )
+                }
+            </div >
+        </div >
     )
 };
