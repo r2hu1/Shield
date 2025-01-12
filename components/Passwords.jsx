@@ -2,9 +2,9 @@
 
 import getPassword from "@/server_functions/pwd/getPassword";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { AlertCircle, AlertTriangle, Check, CheckCircle, Clipboard, ClipboardType, Eye, Globe, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
+import { AlertCircle, AlertTriangle, Check, CheckCircle, Clipboard, ClipboardType, Copy, Eye, Globe, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
 import { FaCloudflare, FaDiscord, FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaReddit, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
@@ -33,12 +33,16 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
+import { TokenContext } from "@/hooks/use-context";
+import { AddPassword } from "./HeaderContent";
 
 export default function Passwords() {
     const [data, setData] = useState([]);
     const [loading, setloading] = useState(true);
     const [loading2, setloading2] = useState(false);
     const user = useSession();
+    const cntx = useContext(TokenContext);
+
 
     const icons = {
         "github": <FaGithub className="h-4 w-4" />,
@@ -128,6 +132,12 @@ export default function Passwords() {
     useEffect(() => {
         getData();
     }, []);
+    useEffect(() => {
+        if (cntx.token == "revalidate") {
+            getData();
+            cntx.setToken(null);
+        }
+    }, [cntx.token])
     return (
         <div className="min-h-[450px]">
             {/*{!loading && data.length > 0 &&
@@ -154,14 +164,17 @@ export default function Passwords() {
                 </div>
             )}*/}
             <div className="grid gap-3">
-                <div className="mb-2">
-                    <h1 className="text-base font-medium">Saved Passwords</h1>
-                    <p className="text-xs text-muted-foreground max-w-md">your saved passwords is encrypted and it can be decrypt only by you.</p>
+                <div className="flex items-center justify-between gap-5 mb-4">
+                    <div>
+                        <h1 className="text-base font-medium">Saved Passwords</h1>
+                        <p className="text-xs text-muted-foreground max-w-md">End to end encryption enabled!</p>
+                    </div>
+                    <AddPassword />
                 </div>
                 <div className="grid gap-3 md:grid-cols-2">
                     {!loading ? data && data.map((item, i) => {
                         return (
-                            <div key={i} className="border border-border rounded-md">
+                            <div key={i} className="border border-border rounded-md bg-card shadow-sm">
                                 <div className="p-2 flex items-center border-b justify-between">
                                     <div className="flex items-center">
                                         {/* <div className="w-10 items-center flex justify-center mr-2">
@@ -189,16 +202,16 @@ export default function Passwords() {
                                                         <p className="text-sm text-muted-foreground">Copy, share or delete your {item.name} account.</p>
                                                         <div className="mt-5 grid gap-3">
                                                             <Label htmlFor="name" className="text-primary -mb-1">Name</Label>
-                                                            <Input type="text" id="name" value={item.name} readOnly className="w-full text-primary border-border" />
+                                                            <Input type="text" id="name" value={item.name} readOnly className="w-full border-border" />
                                                             <Label htmlFor="email" className="text-primary -mb-1">Email</Label>
                                                             <div className="flex items-center gap-2">
-                                                                <Input type="text" id="email" value={decrypt(item.email)} readOnly className="w-full text-primary border-border" />
-                                                                <Button variant="secondary" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.email)); toast.success(`Copied ${item.name} email to clipboard`) }}><ClipboardType className="h-4 w-4" /></Button>
+                                                                <Input type="text" id="email" value={decrypt(item.email)} readOnly className="w-full border-border" />
+                                                                <Button variant="outline" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.email)); toast.success(`Copied ${item.name} email to clipboard`) }}><Copy className="h-4 w-4" /></Button>
                                                             </div>
                                                             <Label htmlFor="password" className="text-primary -mb-1">Password <span className="text-xs text-muted-foreground">encrypted (click copy to decrypt & copy)</span></Label>
                                                             <div className="flex items-center gap-2">
-                                                                <Input type="password" id="password" value={item.password} readOnly className="w-full text-primary border-border" />
-                                                                <Button variant="secondary" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.password)); toast.success(`Copied ${item.name} password to clipboard`) }}><ClipboardType className="h-4 w-4" /></Button>
+                                                                <Input type="password" id="password" value={item.password} readOnly className="w-full border-border" />
+                                                                <Button variant="outline" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.password)); toast.success(`Copied ${item.name} password to clipboard`) }}><Copy className="h-4 w-4" /></Button>
                                                             </div>
                                                             <div className="flex items-center gap-2 mt-2">
                                                                 <Button onClick={() => { navigator.clipboard.writeText(JSON.stringify({ "name": item.name, "email": decrypt(item.email), "password": decrypt(item.password) })); toast.success(`Copied ${item.name} to clipboard`) }}>Copy All</Button>
