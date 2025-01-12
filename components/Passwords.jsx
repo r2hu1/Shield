@@ -208,67 +208,65 @@ export default function Passwords() {
                                             <p className="text-xs text-muted-foreground">{decrypt(item.email)}</p>
                                         </div>
                                     </div>
-                                    <div>
-                                        <Credenza>
-                                            <CredenzaTrigger asChild>
-                                                <Button className="w-9 p-0" size="sm" variant="outline">
-                                                    <Eye className="h-3.5 w-3.5" />
-                                                </Button>
-                                            </CredenzaTrigger>
-                                            {cntx.lock ? (
-                                                <CredenzaContent>
-                                                    <CredenzaHeader>
-                                                        <CredenzaTitle className="text-center">Enter Password</CredenzaTitle>
-                                                        <CredenzaDescription>
-                                                            <p className="text-sm text-center text-muted-foreground -mt-1 mb-2">Enter login password to continue.</p>
-                                                            <form autoFocus onSubmit={handleUnlock} className="text-center flex gap-2 items-center">
-                                                                <Input name="password" type="password" placeholder="Enter your login password.." />
-                                                                <Button type="submit" size="icon" className="!min-w-10"><ArrowRight className="h-4 w-4" /></Button>
-                                                            </form>
-                                                        </CredenzaDescription>
-                                                    </CredenzaHeader>
-                                                </CredenzaContent>
-                                            ) : (
-                                                <CredenzaContent>
-                                                    <CredenzaHeader>
-                                                        <CredenzaTitle className="text-left">Viewing {item.name} Account</CredenzaTitle>
-                                                        <CredenzaDescription className="text-left">
-                                                            <p className="text-sm text-muted-foreground">Copy, share or delete your {item.name} account.</p>
-                                                            <div className="mt-5 grid gap-3">
-                                                                <Label htmlFor="name" className="text-primary -mb-1">Name</Label>
-                                                                <Input type="text" id="name" value={item.name} readOnly className="w-full border-border" />
-                                                                <Label htmlFor="email" className="text-primary -mb-1">Email</Label>
-                                                                <div className="flex items-center gap-2">
-                                                                    <Input type="text" id="email" value={decrypt(item.email)} readOnly className="w-full border-border" />
-                                                                    <Button variant="outline" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.email)); toast.success(`Copied ${item.name} email to clipboard`) }}><Copy className="h-4 w-4" /></Button>
-                                                                </div>
-                                                                <Label htmlFor="password" className="text-primary -mb-1">Password <span className="text-xs text-muted-foreground">encrypted (click copy to decrypt & copy)</span></Label>
-                                                                <div className="flex items-center gap-2">
-                                                                    <Input type="password" id="password" value={item.password} readOnly className="w-full border-border" />
-                                                                    <Button variant="outline" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.password)); toast.success(`Copied ${item.name} password to clipboard`) }}><Copy className="h-4 w-4" /></Button>
-                                                                </div>
-                                                                <div className="flex items-center gap-2 mt-2">
-                                                                    <Button onClick={() => { navigator.clipboard.writeText(JSON.stringify({ "name": item.name, "email": decrypt(item.email), "password": decrypt(item.password) })); toast.success(`Copied ${item.name} to clipboard`) }}>Copy All</Button>
-                                                                    {/* <Button size="icon" onClick={() => navigator.share({ "title": `${item.name} Account`, "text": `Name: ${item.name}\nEmail: ${decrypt(item.email)}\nPassword: ${decrypt(item.password)}` })} variant="outline" className="text-primary border-primary"><Share2 className="h-4 w-4" /></Button> */}
-                                                                    <Popover>
-                                                                        <PopoverTrigger>
-                                                                            <Button size="icon" variant="outline"><Trash className="h-4 w-4" /></Button>
-                                                                        </PopoverTrigger>
-                                                                        <PopoverContent>
-                                                                            <p className="text-sm text-muted-foreground mb-3">
-                                                                                Are you sure you want to delete <span className="text-primary underline">{item.name}?</span> <br /> This action cannot be undone.
-                                                                            </p>
-                                                                            <Button onClick={() => { handleDelete(item._id) }} disabled={loading2} size="sm" variant="destructive">{loading2 ? <Loader className="h-4 w-4 animate-spin" /> : "Delete"}</Button>
-                                                                        </PopoverContent>
-                                                                    </Popover>
-                                                                </div>
+                                    <Credenza>
+                                        <CredenzaTrigger asChild>
+                                            <Button className="w-9 p-0" size="sm" variant="outline">
+                                                <Eye className="h-3.5 w-3.5" />
+                                            </Button>
+                                        </CredenzaTrigger>
+                                        {cntx.lock ? (
+                                            <CredenzaContent>
+                                                <CredenzaHeader>
+                                                    <CredenzaTitle className="text-center">Enter Password</CredenzaTitle>
+                                                    <CredenzaDescription>
+                                                        <p className="text-sm text-center text-muted-foreground -mt-1 mb-2">Enter login password to continue.</p>
+                                                        <form autoFocus onSubmit={handleUnlock} className="text-center flex gap-2 items-center">
+                                                            <Input name="password" type="password" placeholder="Enter your login password.." />
+                                                            <Button type="submit" size="icon" className="!min-w-10"><ArrowRight className="h-4 w-4" /></Button>
+                                                        </form>
+                                                    </CredenzaDescription>
+                                                </CredenzaHeader>
+                                            </CredenzaContent>
+                                        ) : (
+                                            <CredenzaContent>
+                                                <CredenzaHeader>
+                                                    <CredenzaTitle className="text-left">Viewing {item.name} Account</CredenzaTitle>
+                                                    <CredenzaDescription className="text-left">
+                                                        <p className="text-sm text-muted-foreground">Copy, share or delete your {item.name} account.</p>
+                                                        <div className="mt-5 grid gap-3">
+                                                            <Label htmlFor="name" className="text-primary -mb-1">Name</Label>
+                                                            <Input type="text" id="name" value={item.name} readOnly className="w-full border-border" />
+                                                            <Label htmlFor="email" className="text-primary -mb-1">Email</Label>
+                                                            <div className="flex items-center gap-2">
+                                                                <Input type="text" id="email" value={decrypt(item.email)} readOnly className="w-full border-border" />
+                                                                <Button variant="outline" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.email)); toast.success(`Copied ${item.name} email to clipboard`) }}><Copy className="h-4 w-4" /></Button>
                                                             </div>
-                                                        </CredenzaDescription>
-                                                    </CredenzaHeader>
-                                                </CredenzaContent>
-                                            )}
-                                        </Credenza>
-                                    </div>
+                                                            <Label htmlFor="password" className="text-primary -mb-1">Password <span className="text-xs text-muted-foreground">encrypted (click copy to decrypt & copy)</span></Label>
+                                                            <div className="flex items-center gap-2">
+                                                                <Input type="password" id="password" value={item.password} readOnly className="w-full border-border" />
+                                                                <Button variant="outline" className="min-w-10" size="icon" onClick={() => { navigator.clipboard.writeText(decrypt(item.password)); toast.success(`Copied ${item.name} password to clipboard`) }}><Copy className="h-4 w-4" /></Button>
+                                                            </div>
+                                                            <div className="flex items-center gap-2 mt-2">
+                                                                <Button onClick={() => { navigator.clipboard.writeText(JSON.stringify({ "name": item.name, "email": decrypt(item.email), "password": decrypt(item.password) })); toast.success(`Copied ${item.name} to clipboard`) }}>Copy All</Button>
+                                                                {/* <Button size="icon" onClick={() => navigator.share({ "title": `${item.name} Account`, "text": `Name: ${item.name}\nEmail: ${decrypt(item.email)}\nPassword: ${decrypt(item.password)}` })} variant="outline" className="text-primary border-primary"><Share2 className="h-4 w-4" /></Button> */}
+                                                                <Popover>
+                                                                    <PopoverTrigger>
+                                                                        <Button size="icon" variant="outline"><Trash className="h-4 w-4" /></Button>
+                                                                    </PopoverTrigger>
+                                                                    <PopoverContent>
+                                                                        <p className="text-sm text-muted-foreground mb-3">
+                                                                            Are you sure you want to delete <span className="text-primary underline">{item.name}?</span> <br /> This action cannot be undone.
+                                                                        </p>
+                                                                        <Button onClick={() => { handleDelete(item._id) }} disabled={loading2} size="sm" variant="destructive">{loading2 ? <Loader className="h-4 w-4 animate-spin" /> : "Delete"}</Button>
+                                                                    </PopoverContent>
+                                                                </Popover>
+                                                            </div>
+                                                        </div>
+                                                    </CredenzaDescription>
+                                                </CredenzaHeader>
+                                            </CredenzaContent>
+                                        )}
+                                    </Credenza>
                                 </div>
                                 <div className="p-2 flex items-center justify-between">
                                     <p className="text-xs text-muted-foreground">Password strength ~ <span className={passStrength(decrypt(item.password)) > 80 ? "text-muted-foreground" : "dark:text-white text-black"}>{passStrength(decrypt(item.password))}%</span></p>
@@ -296,102 +294,24 @@ export default function Passwords() {
                         )
                     }) : (
                         <>
-                            <div className="border border-border rounded-md">
-                                <div className="p-3 flex w-full items-center justify-between">
-                                    <div className="flex gap-3 items-center">
-                                        <Skeleton className="h-10 w-10" />
-                                        <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md md:w-52 w-32" />
-                                            <Skeleton className="h-3.5 rounded-md md:w-36 w-20" />
+                            {[...Array(8)].map((_, index) => (
+                                <div key={index} className="bg-card border border-border rounded-md">
+                                    <div className="p-3 flex w-full items-center justify-between">
+                                        <div className="flex gap-3 items-center">
+                                            <Skeleton className="h-9 w-9" />
+                                            <div className="grid gap-2">
+                                                <Skeleton className="h-3 rounded-md md:w-52 w-32" />
+                                                <Skeleton className="h-3 rounded-md md:w-36 w-20" />
+                                            </div>
                                         </div>
+                                        <Skeleton className="h-9 rounded-md w-9" />
                                     </div>
-                                    <Skeleton className="h-10 rounded-md w-10" />
-                                </div>
-                                <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md md:w-36 w-1/2" />
-                                    <Skeleton className="h-3.5 rounded-md w-4" />
-                                </div>
-                            </div>
-                            <div className="border border-border rounded-md">
-                                <div className="p-3 flex w-full items-center justify-between">
-                                    <div className="flex gap-3 items-center">
-                                        <Skeleton className="h-10 w-10" />
-                                        <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md md:w-52 w-32" />
-                                            <Skeleton className="h-3.5 rounded-md md:w-36 w-20" />
-                                        </div>
+                                    <div className="p-2 border-t flex items-center justify-between">
+                                        <Skeleton className="h-3 rounded-md md:w-36 w-1/2" />
+                                        <Skeleton className="h-3 rounded-md w-4" />
                                     </div>
-                                    <Skeleton className="h-10 rounded-md w-10" />
                                 </div>
-                                <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md md:w-36 w-1/2" />
-                                    <Skeleton className="h-3.5 rounded-md w-4" />
-                                </div>
-                            </div>
-                            <div className="border border-border rounded-md">
-                                <div className="p-3 flex w-full items-center justify-between">
-                                    <div className="flex gap-3 items-center">
-                                        <Skeleton className="h-10 w-10" />
-                                        <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md md:w-52 w-32" />
-                                            <Skeleton className="h-3.5 rounded-md md:w-36 w-20" />
-                                        </div>
-                                    </div>
-                                    <Skeleton className="h-10 rounded-md w-10" />
-                                </div>
-                                <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md md:w-36 w-1/2" />
-                                    <Skeleton className="h-3.5 rounded-md w-4" />
-                                </div>
-                            </div>
-                            <div className="border border-border rounded-md">
-                                <div className="p-3 flex w-full items-center justify-between">
-                                    <div className="flex gap-3 items-center">
-                                        <Skeleton className="h-10 w-10" />
-                                        <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md md:w-52 w-32" />
-                                            <Skeleton className="h-3.5 rounded-md md:w-36 w-20" />
-                                        </div>
-                                    </div>
-                                    <Skeleton className="h-10 rounded-md w-10" />
-                                </div>
-                                <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md md:w-36 w-1/2" />
-                                    <Skeleton className="h-3.5 rounded-md w-4" />
-                                </div>
-                            </div>
-                            <div className="border border-border rounded-md">
-                                <div className="p-3 flex w-full items-center justify-between">
-                                    <div className="flex gap-3 items-center">
-                                        <Skeleton className="h-10 w-10" />
-                                        <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md md:w-52 w-32" />
-                                            <Skeleton className="h-3.5 rounded-md md:w-36 w-20" />
-                                        </div>
-                                    </div>
-                                    <Skeleton className="h-10 rounded-md w-10" />
-                                </div>
-                                <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md md:w-36 w-1/2" />
-                                    <Skeleton className="h-3.5 rounded-md w-4" />
-                                </div>
-                            </div>
-                            <div className="border border-border rounded-md">
-                                <div className="p-3 flex w-full items-center justify-between">
-                                    <div className="flex gap-3 items-center">
-                                        <Skeleton className="h-10 w-10" />
-                                        <div className="grid gap-2">
-                                            <Skeleton className="h-3.5 rounded-md md:w-52 w-32" />
-                                            <Skeleton className="h-3.5 rounded-md md:w-36 w-20" />
-                                        </div>
-                                    </div>
-                                    <Skeleton className="h-10 rounded-md w-10" />
-                                </div>
-                                <div className="p-2 border-t flex items-center justify-between">
-                                    <Skeleton className="h-3.5 rounded-md md:w-36 w-1/2" />
-                                    <Skeleton className="h-3.5 rounded-md w-4" />
-                                </div>
-                            </div>
+                            ))}
                         </>
                     )}
                 </div>
@@ -401,7 +321,7 @@ export default function Passwords() {
                             <div className="grid place-items-center text-center">
                                 <AlertTriangle className="h-6 w-6 mb-1" />
                                 <h1 className="text-sm">No Passwords Found</h1>
-                                <p className="text-xs text-muted-foreground">Add by clicking Add New on the setting button</p>
+                                <AddPassword />
                             </div>
                         </div>
                     )
