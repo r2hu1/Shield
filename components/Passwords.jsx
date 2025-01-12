@@ -52,8 +52,8 @@ export default function Passwords() {
         if (!e.target.password.value) return toast.error("Please enter password!");
         try {
             const match = await matchPassword({ currentUserEmail: user.data.user.email, currentPassword: e.target.password.value });
-            if(JSON.parse(match).success) {
-                
+            if (JSON.parse(match).success) {
+
                 return cntx.setLock(false);
             }
             else {
@@ -160,19 +160,19 @@ export default function Passwords() {
     }, [cntx.token])
     return (
         <div className="min-h-[450px]">
-            {/*{!loading && data.length > 0 &&
-                <div className="border border-border rounded-md -mt-5 mb-8">
+            {/* {!loading && data.length > 0 &&
+                <div className="border bg-card shadow-sm border-border rounded-md -mt-5 mb-8">
                     <div className="p-3">
                         <h1 className="text-base font-medium">Overall Password Strength</h1>
-                        <p className="text-sm mt-0.5 text-muted-foreground">This is an overall password strength for all your saved passwords.</p>
+                        <p className="text-xs mt-0.5 text-muted-foreground">This is an overall password strength for all your saved passwords.</p>
                         <div className="flex items-center mt-2 gap-3">
                             <Progress value={sum} />
-                            <span className="text-sm font-medium">{Math.floor(sum)}%</span>
+                            <span className="text-xs font-medium">{Math.floor(sum)}%</span>
                         </div>
                     </div>
                 </div>
-            }
-            {loading && (
+            } */}
+            {/* {loading && (
                 <div className="mb-8 -mt-4 grid gap-2 border border-border rounded-md p-3">
                     <Skeleton className="md:w-56 w-full h-4" />
                     <Skeleton className="md:w-96 w-2/3 h-3 mt-1" />
@@ -182,7 +182,7 @@ export default function Passwords() {
                         <Skeleton className="w-5 h-5" />
                     </div>
                 </div>
-            )}*/}
+            )} */}
             <div className="grid gap-3">
                 <div className="flex items-center flex-wrap justify-between gap-2 mb-4">
                     <div>
@@ -215,8 +215,8 @@ export default function Passwords() {
                                                     <Eye className="h-3.5 w-3.5" />
                                                 </Button>
                                             </CredenzaTrigger>
-                                            <CredenzaContent>
-                                                {cntx.lock ? (
+                                            {cntx.lock ? (
+                                                <CredenzaContent>
                                                     <CredenzaHeader>
                                                         <CredenzaTitle className="text-center">Enter Password</CredenzaTitle>
                                                         <CredenzaDescription>
@@ -227,7 +227,9 @@ export default function Passwords() {
                                                             </form>
                                                         </CredenzaDescription>
                                                     </CredenzaHeader>
-                                                ) : (
+                                                </CredenzaContent>
+                                            ) : (
+                                                <CredenzaContent>
                                                     <CredenzaHeader>
                                                         <CredenzaTitle className="text-left">Viewing {item.name} Account</CredenzaTitle>
                                                         <CredenzaDescription className="text-left">
@@ -263,8 +265,8 @@ export default function Passwords() {
                                                             </div>
                                                         </CredenzaDescription>
                                                     </CredenzaHeader>
-                                                )}
-                                            </CredenzaContent>
+                                                </CredenzaContent>
+                                            )}
                                         </Credenza>
                                     </div>
                                 </div>
