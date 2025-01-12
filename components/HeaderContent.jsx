@@ -16,6 +16,7 @@ import {
     CredenzaDescription,
     CredenzaHeader,
     CredenzaTitle,
+    CredenzaTrigger,
 } from "@/components/ui/credenza";
 import {
     AlertDialog,
@@ -32,7 +33,7 @@ import {
 } from "@/components/ui/accordion";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { toast } from "sonner";
 import changePassword from "@/server_functions/user/changePassword";
 import deleteAccount from "@/server_functions/user/deleteAccount";
@@ -42,6 +43,8 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import { TokenContext } from "@/hooks/use-context";
+import { RainbowButton } from "./ui/rainbow-button";
 
 
 export default function HeaderContent() {
@@ -56,6 +59,7 @@ export default function HeaderContent() {
     const [loading3, setLoading3] = useState(false);
     const [pwdt, setPwdt] = useState("password");
     const currUser = useSession();
+    const cntx = useContext(TokenContext);
 
     const handleChangePassword = async () => {
         if (!crntPwd || !newPwd) return toast.error(`Please enter ${!crntPwd ? "your current" : "new"} password!`);
@@ -100,32 +104,7 @@ export default function HeaderContent() {
         }
     };
 
-    const handleAdd = async (e) => {
-        e.preventDefault();
-        let name = e.target.name.value;
-        let email = e.target.email.value;
-        let password = e.target.password.value;
-        if (!name || !email || !password) return toast.error(`Please enter ${!name ? "name!" : ""} ${!email ? "email or username!" : ""} ${!password ? "password!" : ""}`);
-        try {
-            setLoading3(true);
-            const data = await createPassword({ currentUserEmail: currUser.data.user.email, name, email, password });
-            if (JSON.parse(data).success) {
-                setLoading3(false);
-                e.target.reset();
-                setIsOpen(false);
-                toast.success("Password added successfully!")
-                return setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            }
-            setLoading3(false);
-            toast.error(JSON.parse(data).error);
-        }
-        catch (e) {
-            setLoading3(false);
-            console.log(e);
-        }
-    }
+
     return (
         <>
             <DropdownMenu>
@@ -202,30 +181,69 @@ export default function HeaderContent() {
                     </AlertDialogHeader>
                 </AlertDialogContent>
             </AlertDialog>
-
-            <Credenza open={isOpen} onOpenChange={setIsOpen}>
-                <CredenzaContent className="focus:outline-none">
-                    <CredenzaHeader>
-                        <CredenzaTitle className="text-left">Add new password</CredenzaTitle>
-                        <CredenzaDescription className="text-left">
-                            <p className="text-sm text-muted-foreground -mt-1">The email and password will be encrypted with higest encryption strength possible and cannot be decrypted by anyone except you.</p>
-                            <form onSubmit={handleAdd} method="post" className="grid gap-2 mt-4">
-                                <Label className="text-primary" htmlFor="name">Name</Label>
-                                <Input name="name" type="text" id="name" autoComplete="off" placeholder="Google Account" className="w-full" />
-                                <Label htmlFor="email" className="mt-1 text-primary">Email / Username / Number</Label>
-                                <Input name="email" type="text" id="email" autoComplete="off" placeholder="name@domain.com" className="w-full" />
-                                <Label htmlFor="password" className="mt-1 text-primary">Password</Label>
-                                <div className="flex items-center gap-3">
-                                    <Input name="password" type={pwdt} id="password" autoComplete="off" placeholder="pass****" className="w-full" />
-                                    <Button size="icon" variant="secondary" type="button" className="min-w-10" onClick={() => setPwdt(pwdt === "password" ? "text" : "password")}>{pwdt === "password" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
-                                </div>
-                                <p className="text-xs max-w-md text-muted-foreground">No one can see your email & password even the coder itself, It will be encrypted with highest encryption strength possible!</p>
-                                <Button type="submit" className="mt-2" disabled={loading3}>{loading3 ? <Loader className="w-4 h-4 animate-spin" /> : "Add Password"}</Button>
-                            </form>
-                        </CredenzaDescription>
-                    </CredenzaHeader>
-                </CredenzaContent>
-            </Credenza>
         </>
+    )
+};
+
+export const AddPassword = () => {
+    const currUser = useSession();
+    const cntx = useContext(TokenContext);
+    const [isOpen, setIsOpen] = useState(false);
+    const [loading3, setLoading3] = useState(false);
+    const [pwdt, setPwdt] = useState("password");
+
+    const handleAdd = async (e) => {
+        e.preventDefault();
+        let name = e.target.name.value;
+        let email = e.target.email.value;
+        let password = e.target.password.value;
+        if (!name || !email || !password) return toast.error(`Please enter ${!name ? "name!" : ""} ${!email ? "email or username!" : ""} ${!password ? "password!" : ""}`);
+        try {
+            setLoading3(true);
+            const data = await createPassword({ currentUserEmail: currUser.data.user.email, name, email, password });
+            if (JSON.parse(data).success) {
+                setLoading3(false);
+                e.target.reset();
+                setIsOpen(false);
+                toast.success("Password added successfully!")
+                return cntx.setToken("revalidate");
+            }
+            setLoading3(false);
+            toast.error(JSON.parse(data).error);
+        }
+        catch (e) {
+            setLoading3(false);
+            console.log(e);
+        }
+    }
+    return (
+        <Credenza open={isOpen} onOpenChange={setIsOpen}>
+            <CredenzaTrigger asChild>
+                <Button size="sm" asChild>
+                    <RainbowButton className="gap-1">New <Plus className="h-4 w-4" /></RainbowButton>
+                </Button>
+            </CredenzaTrigger>
+            <CredenzaContent className="focus:outline-none">
+                <CredenzaHeader>
+                    <CredenzaTitle className="text-left">Add new password</CredenzaTitle>
+                    <CredenzaDescription className="text-left">
+                        <p className="text-sm text-muted-foreground -mt-1">We use crypto encryption to secure your passwords!</p>
+                        <form onSubmit={handleAdd} method="post" className="grid gap-2 mt-4">
+                            <Label className="text-primary" htmlFor="name">Name</Label>
+                            <Input name="name" type="text" id="name" autoComplete="off" placeholder="Google Account" className="w-full" />
+                            <Label htmlFor="email" className="mt-1 text-primary">Email / Username / Number</Label>
+                            <Input name="email" type="text" id="email" autoComplete="off" placeholder="name@domain.com" className="w-full" />
+                            <Label htmlFor="password" className="mt-1 text-primary">Password</Label>
+                            <div className="flex items-center gap-3">
+                                <Input name="password" type={pwdt} id="password" autoComplete="off" placeholder="pass****" className="w-full" />
+                                <Button size="icon" variant="outline" type="button" className="min-w-10" onClick={() => setPwdt(pwdt === "password" ? "text" : "password")}>{pwdt === "password" ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</Button>
+                            </div>
+                            <p className="text-xs max-w-md text-muted-foreground">No one can see your email & password even the coder itself, It will be encrypted with highest encryption strength possible!</p>
+                            <Button type="submit" className="mt-2" disabled={loading3}>{loading3 ? <Loader className="w-4 h-4 animate-spin" /> : "Save Password"}</Button>
+                        </form>
+                    </CredenzaDescription>
+                </CredenzaHeader>
+            </CredenzaContent>
+        </Credenza>
     )
 };
