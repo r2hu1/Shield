@@ -53,7 +53,7 @@ export default function Passwords() {
         try {
             const match = await matchPassword({ currentUserEmail: user.data.user.email, currentPassword: e.target.password.value });
             if (JSON.parse(match).success) {
-
+                toast.success("Password matched!");
                 return cntx.setLock(false);
             }
             else {
@@ -208,13 +208,13 @@ export default function Passwords() {
                                             <p className="text-xs text-muted-foreground">{decrypt(item.email)}</p>
                                         </div>
                                     </div>
-                                    <Credenza>
+                                        {cntx.lock ? (
+                                     <Credenza>
                                         <CredenzaTrigger asChild>
                                             <Button className="w-9 p-0" size="sm" variant="outline">
                                                 <Eye className="h-3.5 w-3.5" />
                                             </Button>
-                                        </CredenzaTrigger>
-                                        {cntx.lock ? (
+                                         </CredenzaTrigger>
                                             <CredenzaContent>
                                                 <CredenzaHeader>
                                                     <CredenzaTitle className="text-center">Enter Password</CredenzaTitle>
@@ -227,7 +227,14 @@ export default function Passwords() {
                                                     </CredenzaDescription>
                                                 </CredenzaHeader>
                                             </CredenzaContent>
+                                         </Credenza>
                                         ) : (
+                                         <Credenza>
+                                        <CredenzaTrigger asChild>
+                                            <Button className="w-9 p-0" size="sm" variant="outline">
+                                                <Eye className="h-3.5 w-3.5" />
+                                            </Button>
+                                        </CredenzaTrigger>
                                             <CredenzaContent>
                                                 <CredenzaHeader>
                                                     <CredenzaTitle className="text-left">Viewing {item.name} Account</CredenzaTitle>
@@ -265,8 +272,9 @@ export default function Passwords() {
                                                     </CredenzaDescription>
                                                 </CredenzaHeader>
                                             </CredenzaContent>
+                                             </Credenza>
                                         )}
-                                    </Credenza>
+                                    
                                 </div>
                                 <div className="p-2 flex items-center justify-between">
                                     <p className="text-xs text-muted-foreground">Password strength ~ <span className={passStrength(decrypt(item.password)) > 80 ? "text-muted-foreground" : "dark:text-white text-black"}>{passStrength(decrypt(item.password))}%</span></p>
