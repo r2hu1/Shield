@@ -4,7 +4,7 @@ import getPassword from "@/server_functions/pwd/getPassword";
 import { useSession } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { AlertCircle, AlertTriangle, ArrowRight, Check, CheckCircle, Clipboard, ClipboardType, Copy, Eye, Globe, Loader, RotateCw, Share2, Trash, X } from "lucide-react";
+import { AlertCircle, AlertTriangle, ArrowRight, Check, CheckCircle, Clipboard, ClipboardType, Copy, Eye, Globe, Loader, Loader2, RotateCw, Share2, Trash, X } from "lucide-react";
 import { decrypt } from "@/lib/crypto";
 import { FaCloudflare, FaDiscord, FaFacebook, FaGithub, FaGoogle, FaInstagram, FaLinkedin, FaMicrosoft, FaQuora, FaReddit, FaRegUser, FaStackOverflow, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
@@ -42,6 +42,7 @@ export default function Passwords() {
     const [data, setData] = useState([]);
     const [loading, setloading] = useState(true);
     const [loading2, setloading2] = useState(false);
+    const [loadingL, setloadingL] = useState(false);
     const user = useSession();
     const cntx = useContext(TokenContext);
 
@@ -51,6 +52,7 @@ export default function Passwords() {
         console.log(e.target.password.value);
         if (!e.target.password.value) return toast.error("Please enter password!");
         try {
+            setloadingL(true);
             const match = await matchPassword({ currentUserEmail: user.data.user.email, currentPassword: e.target.password.value });
             if (JSON.parse(match).success) {
                 toast.success("Password matched!");
@@ -62,6 +64,9 @@ export default function Passwords() {
         }
         catch (e) {
             console.log(e);
+        }
+        finally{
+            setloadingL(false);
         }
     }
 
@@ -208,33 +213,33 @@ export default function Passwords() {
                                             <p className="text-xs text-muted-foreground">{decrypt(item.email)}</p>
                                         </div>
                                     </div>
-                                        {cntx.lock ? (
-                                     <Credenza>
-                                        <CredenzaTrigger asChild>
-                                            <Button className="w-9 p-0" size="sm" variant="outline">
-                                                <Eye className="h-3.5 w-3.5" />
-                                            </Button>
-                                         </CredenzaTrigger>
+                                    {cntx.lock ? (
+                                        <Credenza>
+                                            <CredenzaTrigger asChild>
+                                                <Button className="w-9 p-0" size="sm" variant="outline">
+                                                    <Eye className="h-3.5 w-3.5" />
+                                                </Button>
+                                            </CredenzaTrigger>
                                             <CredenzaContent>
                                                 <CredenzaHeader>
-                                                    <CredenzaTitle className="text-center">Enter Password</CredenzaTitle>
+                                                    <CredenzaTitle className="text-left">Enter Password</CredenzaTitle>
                                                     <CredenzaDescription>
-                                                        <p className="text-sm text-center text-muted-foreground -mt-1 mb-2">Enter login password to continue.</p>
+                                                        <p className="text-sm text-left text-muted-foreground -mt-1 mb-2">Enter login password to continue.</p>
                                                         <form autoFocus onSubmit={handleUnlock} className="text-center flex gap-2 items-center">
                                                             <Input name="password" type="password" placeholder="Enter your login password.." />
-                                                            <Button type="submit" size="icon" className="!min-w-10"><ArrowRight className="h-4 w-4" /></Button>
+                                                            <Button type="submit" disabled={loadingL} size="icon" className="!min-w-10">{!loadingL ? <ArrowRight className="h-4 w-4" /> : <Loader2 className="h-4 w-4 animate-spin" />}</Button>
                                                         </form>
                                                     </CredenzaDescription>
                                                 </CredenzaHeader>
                                             </CredenzaContent>
-                                         </Credenza>
-                                        ) : (
-                                         <Credenza>
-                                        <CredenzaTrigger asChild>
-                                            <Button className="w-9 p-0" size="sm" variant="outline">
-                                                <Eye className="h-3.5 w-3.5" />
-                                            </Button>
-                                        </CredenzaTrigger>
+                                        </Credenza>
+                                    ) : (
+                                        <Credenza>
+                                            <CredenzaTrigger asChild>
+                                                <Button className="w-9 p-0" size="sm" variant="outline">
+                                                    <Eye className="h-3.5 w-3.5" />
+                                                </Button>
+                                            </CredenzaTrigger>
                                             <CredenzaContent>
                                                 <CredenzaHeader>
                                                     <CredenzaTitle className="text-left">Viewing {item.name} Account</CredenzaTitle>
@@ -272,9 +277,9 @@ export default function Passwords() {
                                                     </CredenzaDescription>
                                                 </CredenzaHeader>
                                             </CredenzaContent>
-                                             </Credenza>
-                                        )}
-                                    
+                                        </Credenza>
+                                    )}
+
                                 </div>
                                 <div className="p-2 flex items-center justify-between">
                                     <p className="text-xs text-muted-foreground">Password strength ~ <span className={passStrength(decrypt(item.password)) > 80 ? "text-muted-foreground" : "dark:text-white text-black"}>{passStrength(decrypt(item.password))}%</span></p>
